@@ -1,5 +1,5 @@
 <template>
-  <div id="Editor" class="Editor"></div>
+  <div id="Editor" class="Editor" :style="innerStyleObj"></div>
 </template>
 
 <script lang="ts">
@@ -15,12 +15,24 @@ interface IData {
 }
 
 export default Vue.extend({
+  props: {
+    styleObj: {
+      type: Object
+    }
+  },
   data(): IData {
     return {
       sandboxConfig: {
         domID: "Editor"
       }
     };
+  },
+  computed: {
+    innerStyleObj(): object {
+      const defaultStyle = this.styleObj || {}
+
+      return defaultStyle
+    }
   },
   methods: {
     async createSandbox(): Promise<Sandbox> {

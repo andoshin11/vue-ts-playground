@@ -1,16 +1,61 @@
 <template>
   <div class="home">
-    <Editor />
+    <Editor :styleObj="editorStyle" />
+    <Dragbar v-if="sidebarRef" :sidebarRef="sidebarRef" @drag="handleDrag" />
+    <Sidebar :styleObj="sidebarStyle" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import Editor from "@/components/Editor";
+import Dragbar from '@/components/Dragbar'
+import Sidebar from "@/components/Sidebar"
 
-export default {
-  name: "home",
+interface IData {
+  editorStyle: object;
+  sidebarStyle: object;
+  sidebarRef: Element | null
+  setRefInterval: number | null
+}
+
+export default Vue.extend({
   components: {
-    Editor
+    Editor,
+    Dragbar,
+    Sidebar
+  },
+  data(): IData {
+    return {
+      editorStyle: {},
+      sidebarStyle: {},
+      sidebarRef: null,
+      setRefInterval: null
+    }
+  },
+  methods: {
+    handleDrag(data: { editor: object; sidebar: object }) {
+      const { editor, sidebar } = data
+
+      this.editorStyle = editor
+      this.sidebarStyle = sidebar
+    }
+  },
+  async mounted() {
+    const vm = this
+
+    // since original $refs object of Vue is not reactive
+    vm.setRefInterval = setInterval(() => {
+      if (vm.sidebarRef && vm.setRefInterval) clearInterval(vm.setRefInterval)
+      const sidebarRef = document.getElementById('Sidebar')
+      if (sidebarRef) vm.sidebarRef = sidebarRef
+    }, 500)
   }
-};
+})
 </script>
+
+<style scoped>
+.home {
+  display: flex;
+}
+</style>
