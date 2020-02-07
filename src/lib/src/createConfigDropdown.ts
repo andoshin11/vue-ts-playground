@@ -1,164 +1,189 @@
-import { Sandbox } from '@/lib/sandbox'
-import { Playground } from '.'
+import { Sandbox } from "@/lib/sandbox";
+import { Playground } from ".";
 
-type Monaco = typeof import('monaco-editor')
+type Monaco = typeof import("monaco-editor");
 
 type OptionsSummary = {
-  display: string
-  oneliner: string
-  id: string
-  categoryID: string
-  categoryDisplay: string
-}
+  display: string;
+  oneliner: string;
+  id: string;
+  categoryID: string;
+  categoryDisplay: string;
+};
 
-declare const optionsSummary: OptionsSummary[]
+declare const optionsSummary: OptionsSummary[];
 
 export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
-  const configContainer = document.getElementById('config-container')!
-  const container = document.createElement('div')
-  container.id = 'boolean-options-container'
-  configContainer.appendChild(container)
+  const configContainer = document.getElementById("config-container")!;
+  const container = document.createElement("div");
+  container.id = "boolean-options-container";
+  configContainer.appendChild(container);
 
-  const compilerOpts = sandbox.getCompilerOptions()
-  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
+  const compilerOpts = sandbox.getCompilerOptions();
+  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(
+    k => typeof compilerOpts[k] === "boolean"
+  );
 
   // we want to make sections of categories
-  const categoryMap = {} as { [category: string]: { [optID: string]: OptionsSummary } }
+  const categoryMap = {} as {
+    [category: string]: { [optID: string]: OptionsSummary };
+  };
   boolOptions.forEach(optID => {
-    const summary = optionsSummary.find(sum => optID === sum.id)!
+    const summary = optionsSummary.find(sum => optID === sum.id)!;
 
-    const existingCategory = categoryMap[summary.categoryID]
-    if (!existingCategory) categoryMap[summary.categoryID] = {}
+    const existingCategory = categoryMap[summary.categoryID];
+    if (!existingCategory) categoryMap[summary.categoryID] = {};
 
-    categoryMap[summary.categoryID][optID] = summary
-  })
+    categoryMap[summary.categoryID][optID] = summary;
+  });
 
   Object.keys(categoryMap).forEach(categoryID => {
-    const categoryDiv = document.createElement('div')
-    const header = document.createElement('h4')
-    const ol = document.createElement('ol')
+    const categoryDiv = document.createElement("div");
+    const header = document.createElement("h4");
+    const ol = document.createElement("ol");
 
     Object.keys(categoryMap[categoryID]).forEach(optID => {
-      const optSummary = categoryMap[categoryID][optID]
-      header.textContent = optSummary.categoryDisplay
+      const optSummary = categoryMap[categoryID][optID];
+      header.textContent = optSummary.categoryDisplay;
 
-      const li = document.createElement('li')
-      const label = document.createElement('label')
-      label.innerHTML = `<span>${optSummary.id}</span><br/>${optSummary.oneliner}`
+      const li = document.createElement("li");
+      const label = document.createElement("label");
+      label.innerHTML = `<span>${optSummary.id}</span><br/>${optSummary.oneliner}`;
 
-      const input = document.createElement('input')
-      input.value = optSummary.id
-      input.type = 'checkbox'
-      input.name = optSummary.id
-      input.id = 'option-' + optSummary.id
+      const input = document.createElement("input");
+      input.value = optSummary.id;
+      input.type = "checkbox";
+      input.name = optSummary.id;
+      input.id = "option-" + optSummary.id;
 
       input.onchange = () => {
-        sandbox.updateCompilerSetting(optSummary.id, input.checked)
-      }
+        sandbox.updateCompilerSetting(optSummary.id, input.checked);
+      };
 
-      label.htmlFor = input.id
+      label.htmlFor = input.id;
 
-      li.appendChild(input)
-      li.appendChild(label)
-      ol.appendChild(li)
-    })
+      li.appendChild(input);
+      li.appendChild(label);
+      ol.appendChild(li);
+    });
 
-    categoryDiv.appendChild(header)
-    categoryDiv.appendChild(ol)
-    container.appendChild(categoryDiv)
-  })
+    categoryDiv.appendChild(header);
+    categoryDiv.appendChild(ol);
+    container.appendChild(categoryDiv);
+  });
 
-  const dropdownContainer = document.getElementById('compiler-dropdowns')!
+  const dropdownContainer = document.getElementById("compiler-dropdowns")!;
 
-  const target = optionsSummary.find(sum => sum.id === 'target')!
+  const target = optionsSummary.find(sum => sum.id === "target")!;
   const targetSwitch = createSelect(
     target.display,
-    'target',
+    "target",
     target.oneliner,
     sandbox,
     monaco.languages.typescript.ScriptTarget
-  )
-  dropdownContainer.appendChild(targetSwitch)
+  );
+  dropdownContainer.appendChild(targetSwitch);
 
-  const jsx = optionsSummary.find(sum => sum.id === 'jsx')!
-  const jsxSwitch = createSelect(jsx.display, 'jsx', jsx.oneliner, sandbox, monaco.languages.typescript.JsxEmit)
-  dropdownContainer.appendChild(jsxSwitch)
+  const jsx = optionsSummary.find(sum => sum.id === "jsx")!;
+  const jsxSwitch = createSelect(
+    jsx.display,
+    "jsx",
+    jsx.oneliner,
+    sandbox,
+    monaco.languages.typescript.JsxEmit
+  );
+  dropdownContainer.appendChild(jsxSwitch);
 
-  const modSum = optionsSummary.find(sum => sum.id === 'module')!
+  const modSum = optionsSummary.find(sum => sum.id === "module")!;
   const moduleSwitch = createSelect(
     modSum.display,
-    'module',
+    "module",
     modSum.oneliner,
     sandbox,
     monaco.languages.typescript.ModuleKind
-  )
-  dropdownContainer.appendChild(moduleSwitch)
-}
+  );
+  dropdownContainer.appendChild(moduleSwitch);
+};
 
-export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox, monaco: Monaco) => {
-  const compilerOpts = sandbox.getCompilerOptions()
-  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
+export const updateConfigDropdownForCompilerOptions = (
+  sandbox: Sandbox,
+  monaco: Monaco
+) => {
+  const compilerOpts = sandbox.getCompilerOptions();
+  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(
+    k => typeof compilerOpts[k] === "boolean"
+  );
 
   boolOptions.forEach(opt => {
-    const inputID = 'option-' + opt
-    const input = document.getElementById(inputID) as HTMLInputElement
-    input.checked = !!compilerOpts[opt]
-  })
+    const inputID = "option-" + opt;
+    const input = document.getElementById(inputID) as HTMLInputElement;
+    input.checked = !!compilerOpts[opt];
+  });
 
   const compilerIDToMaps: any = {
     module: monaco.languages.typescript.ModuleKind,
     jsx: monaco.languages.typescript.JsxEmit,
-    target: monaco.languages.typescript.ScriptTarget,
-  }
+    target: monaco.languages.typescript.ScriptTarget
+  };
 
   Object.keys(compilerIDToMaps).forEach(flagID => {
-    const input = document.getElementById('compiler-select-' + flagID) as HTMLInputElement
-    const currentValue = compilerOpts[flagID]
-    const map = compilerIDToMaps[flagID]
+    const input = document.getElementById(
+      "compiler-select-" + flagID
+    ) as HTMLInputElement;
+    const currentValue = compilerOpts[flagID];
+    const map = compilerIDToMaps[flagID];
     // @ts-ignore
-    const realValue = map[currentValue]
+    const realValue = map[currentValue];
     // @ts-ignore
     for (const option of input.children) {
-      (option as HTMLOptionElement).selected = (option as HTMLOptionElement).value.toLowerCase() === realValue.toLowerCase()
+      (option as HTMLOptionElement).selected =
+        (option as HTMLOptionElement).value.toLowerCase() ===
+        realValue.toLowerCase();
     }
-  })
-}
+  });
+};
 
-const createSelect = (title: string, id: string, blurb: string, sandbox: Sandbox, option: any) => {
-  const label = document.createElement('label')
-  const textToDescribe = document.createElement('span')
-  textToDescribe.textContent = title + ':'
-  label.appendChild(textToDescribe)
+const createSelect = (
+  title: string,
+  id: string,
+  blurb: string,
+  sandbox: Sandbox,
+  option: any
+) => {
+  const label = document.createElement("label");
+  const textToDescribe = document.createElement("span");
+  textToDescribe.textContent = title + ":";
+  label.appendChild(textToDescribe);
 
-  const select = document.createElement('select')
-  select.id = 'compiler-select-' + id
-  label.appendChild(select)
+  const select = document.createElement("select");
+  select.id = "compiler-select-" + id;
+  label.appendChild(select);
 
   select.onchange = () => {
-    const value = select.value // the human string
-    const compilerIndex = option[value]
-    sandbox.updateCompilerSetting(id, compilerIndex)
-  }
+    const value = select.value; // the human string
+    const compilerIndex = option[value];
+    sandbox.updateCompilerSetting(id, compilerIndex);
+  };
 
   Object.keys(option)
     .filter(key => isNaN(Number(key)))
     .forEach(key => {
       // hide Latest
-      if (key === 'Latest') return
+      if (key === "Latest") return;
 
-      const option = document.createElement('option')
-      option.value = key
-      option.text = key
+      const option = document.createElement("option");
+      option.value = key;
+      option.text = key;
 
-      select.appendChild(option)
-    })
+      select.appendChild(option);
+    });
 
-  const span = document.createElement('span')
-  span.textContent = blurb
-  span.classList.add('compiler-flag-blurb')
-  label.appendChild(span)
+  const span = document.createElement("span");
+  span.textContent = blurb;
+  span.classList.add("compiler-flag-blurb");
+  label.appendChild(span);
 
-  return label
-}
+  return label;
+};
 
-export const setupJSONToggleForConfig = (sandbox: Sandbox) => {}
+export const setupJSONToggleForConfig = (sandbox: Sandbox) => {};

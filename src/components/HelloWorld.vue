@@ -8,9 +8,7 @@
         >vue-cli documentation</a
       >.
     </p>
-    <form action="">
-      
-    </form>
+    <form action=""></form>
   </div>
 </template>
 

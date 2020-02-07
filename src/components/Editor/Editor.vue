@@ -3,34 +3,38 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { createTypeScriptSandbox, PlaygroundConfig, Sandbox } from '@/lib/sandbox'
+import Vue from "vue";
+import {
+  createTypeScriptSandbox,
+  PlaygroundConfig,
+  Sandbox
+} from "@/lib/sandbox";
 
 interface IData {
-  sandboxConfig: Partial<PlaygroundConfig>
+  sandboxConfig: Partial<PlaygroundConfig>;
 }
 
 export default Vue.extend({
   data(): IData {
     return {
       sandboxConfig: {
-        domID: 'Editor'
+        domID: "Editor"
       }
-    }
+    };
   },
   methods: {
     async createSandbox(): Promise<Sandbox> {
-      const monaco = await import('monaco-editor')
-      const ts = await import('typescript')
-      const sandbox = createTypeScriptSandbox(this.sandboxConfig, monaco, ts)
-      return sandbox
+      const monaco = await import("monaco-editor");
+      const ts = await import("typescript");
+      const sandbox = createTypeScriptSandbox(this.sandboxConfig, monaco, ts);
+      return sandbox;
     }
   },
   async mounted() {
-    const sandbox = await this.createSandbox()
-    sandbox.editor.focus()
+    const sandbox = await this.createSandbox();
+    sandbox.editor.focus();
   }
-})
+});
 </script>
 
 <style scoped>

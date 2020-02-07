@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <Header/>
+    <Header />
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Header from '@/components/Header'
+import Vue from "vue";
+import Header from "@/components/Header";
 
 export default Vue.extend({
   components: {
     Header
-  }  
-})
+  }
+});
 </script>
 
 <style>
