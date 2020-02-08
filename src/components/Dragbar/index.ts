@@ -1,3 +1,3 @@
-import Dragbar from './Dragbar.vue'
+import Dragbar from "./Dragbar.vue";
 
-export default Dragbar
+export default Dragbar;

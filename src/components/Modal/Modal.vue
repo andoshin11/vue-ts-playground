@@ -1,7 +1,11 @@
 <template>
   <div>
     <transition name="transition">
-      <div v-if="active" class="modal" :class="{ grey: color === 'grey', fixed }">
+      <div
+        v-if="active"
+        class="modal"
+        :class="{ grey: color === 'grey', fixed }"
+      >
         <div class="modal-container">
           <div class="modal-container-header">
             <div class="close" @click="$emit('close')" />
@@ -17,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 
 export default Vue.extend({
   props: {
@@ -31,18 +35,18 @@ export default Vue.extend({
     },
     width: {
       type: String,
-      default: ''
+      default: ""
     },
     height: {
       type: String,
-      default: ''
+      default: ""
     },
     color: {
       type: String,
-      default: ''
+      default: ""
     }
   }
-})
+});
 </script>
 
 <style scoped>
@@ -110,7 +114,7 @@ export default Vue.extend({
 }
 .close:before,
 .close:after {
-  content: '';
+  content: "";
   position: absolute;
   right: 15px;
   height: 32px;

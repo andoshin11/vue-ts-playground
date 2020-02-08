@@ -1,3 +1,3 @@
-import SidebarTabs from './SidebarTabs.vue'
+import SidebarTabs from "./SidebarTabs.vue";
 
-export default SidebarTabs
+export default SidebarTabs;

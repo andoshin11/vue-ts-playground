@@ -1,3 +1,3 @@
-import SidebarTabContainer from './SidebarTabContainer.vue'
+import SidebarTabContainer from "./SidebarTabContainer.vue";
 
-export default SidebarTabContainer
+export default SidebarTabContainer;

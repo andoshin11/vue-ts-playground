@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 export default Vue.extend({
   props: {
     sidebarRef: {
@@ -26,7 +26,7 @@ export default Vue.extend({
       document.body.style.userSelect = "auto";
     },
     drag(e: MouseEvent) {
-      if (!this.sidebarRef) return
+      if (!this.sidebarRef) return;
 
       // Get how far right the mouse is from the right
       const rightX = this.sidebarRef.getBoundingClientRect().right;
@@ -35,7 +35,7 @@ export default Vue.extend({
       const clampedOffset = Math.min(Math.max(offset, 280), screenClampLeft);
 
       // Emit style object
-      this.$emit('drag', {
+      this.$emit("drag", {
         editor: {
           width: `calc(100% - ${clampedOffset}px)`
         },
@@ -44,7 +44,7 @@ export default Vue.extend({
           flexBasis: `${clampedOffset}px`,
           maxWidth: `${clampedOffset}px`
         }
-      })
+      });
 
       // Save the x coordinate of the
       if (window.localStorage) {
@@ -60,7 +60,7 @@ export default Vue.extend({
       e.cancelBubble = true;
     }
   }
-})
+});
 </script>
 
 <style scoped>

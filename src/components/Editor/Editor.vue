@@ -6,13 +6,13 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { RootState } from '@/store'
+import { RootState } from "@/store";
 import {
   createTypeScriptSandbox,
   PlaygroundConfig,
   Sandbox
 } from "@/lib/sandbox";
-import EditorTabs from '@/components/EditorTabs'
+import EditorTabs from "@/components/EditorTabs";
 
 export default Vue.extend({
   components: {
@@ -25,16 +25,15 @@ export default Vue.extend({
   },
   computed: {
     innerStyleObj(): object {
-      const defaultStyle = this.styleObj || {}
+      const defaultStyle = this.styleObj || {};
 
-      return defaultStyle
+      return defaultStyle;
     },
     state(): RootState {
-      return this.$store.state
+      return this.$store.state;
     }
   },
-  methods: {
-  },
+  methods: {},
   async mounted() {
     // const sandbox = await this.createSandbox();
     // sandbox.editor.focus();

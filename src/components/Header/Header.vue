@@ -1,7 +1,12 @@
 <template>
-  <header class="Header">
-    <div class="logo">TS Playground by Vue</div>
-  </header>
+  <div>
+    <header class="Header">
+      <div class="logo">TS Playground by Vue</div>
+    </header>
+    <v-app-bar>
+      <v-toolbar-title>Page title</v-toolbar-title>
+    </v-app-bar>
+  </div>
 </template>
 
 <script lang="ts">

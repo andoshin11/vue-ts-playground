@@ -17,33 +17,33 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { RootState } from '@/store'
+import Vue from "vue";
+import { RootState } from "@/store";
 
 interface IData {
-  showVersions: boolean
+  showVersions: boolean;
 }
 
 export default Vue.extend({
   data(): IData {
     return {
       showVersions: false
-    }
+    };
   },
   computed: {
     state(): RootState {
-      return this.$store.state
+      return this.$store.state;
     },
     tsVersion(): string | null {
-      const { sandbox } = this.state
-      return sandbox && sandbox.ts.version
+      const { sandbox } = this.state;
+      return sandbox && sandbox.ts.version;
     },
     allVersions(): string[] {
-      const { sandbox } = this.state
-      return ["3.8.0-beta", ...(sandbox ? sandbox.supportedVersions : [])]
+      const { sandbox } = this.state;
+      return ["3.8.0-beta", ...(sandbox ? sandbox.supportedVersions : [])];
     }
   }
-})
+});
 </script>
 
 <style scoped>
@@ -67,7 +67,7 @@ export default Vue.extend({
   display: flex;
   font-weight: 600;
   font-size: 1rem;
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
 }
 
 .carret {

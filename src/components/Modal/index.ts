@@ -1,3 +1,3 @@
-import Modal from './Modal.vue'
+import Modal from "./Modal.vue";
 
-export default Modal
+export default Modal;

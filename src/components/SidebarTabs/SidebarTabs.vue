@@ -1,12 +1,20 @@
 <template>
   <div class="SidebarTabs">
-    <button v-for="plugin in plugins" :key="plugin.id" class="tab" :class="{ active: plugin.id === currentPluginId }" @click="changePlugin(plugin)">{{ plugin.displayName }}</button>
-  </div>  
+    <button
+      v-for="plugin in plugins"
+      :key="plugin.id"
+      class="tab"
+      :class="{ active: plugin.id === currentPluginId }"
+      @click="changePlugin(plugin)"
+    >
+      {{ plugin.displayName }}
+    </button>
+  </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { PlaygroundPlugin } from '@/lib/playground'
+import Vue from "vue";
+import { PlaygroundPlugin } from "@/lib/playground";
 
 export default Vue.extend({
   props: {
@@ -21,10 +29,10 @@ export default Vue.extend({
   },
   methods: {
     changePlugin(plugin: PlaygroundPlugin) {
-      this.$store.dispatch('storeCurrentPlugin', plugin)
+      this.$store.dispatch("storeCurrentPlugin", plugin);
     }
   }
-})
+});
 </script>
 
 <style scoped>
@@ -37,7 +45,7 @@ export default Vue.extend({
 }
 
 .tab {
-  font-family: Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+  font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
   margin: 5px 2px;
   padding-top: 0;
   font-size: 14px;
