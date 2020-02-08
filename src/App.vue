@@ -1,17 +1,21 @@
 <template>
   <div id="app">
     <Header />
-    <router-view />
+    <Provider>
+      <router-view />
+    </Provider>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import Provider from '@/Provier'
 import Header from "@/components/Header";
 
 export default Vue.extend({
   components: {
-    Header
+    Header,
+    Provider
   }
 });
 </script>
