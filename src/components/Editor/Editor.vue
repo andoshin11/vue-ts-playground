@@ -1,57 +1,50 @@
 <template>
-  <div id="Editor" class="Editor" :style="innerStyleObj"></div>
+  <div id="Editor" class="Editor" :style="innerStyleObj">
+    <EditorTabs />
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { RootState } from '@/store'
 import {
   createTypeScriptSandbox,
   PlaygroundConfig,
   Sandbox
 } from "@/lib/sandbox";
-
-interface IData {
-  sandboxConfig: Partial<PlaygroundConfig>;
-}
+import EditorTabs from '@/components/EditorTabs'
 
 export default Vue.extend({
+  components: {
+    EditorTabs
+  },
   props: {
     styleObj: {
       type: Object
     }
-  },
-  data(): IData {
-    return {
-      sandboxConfig: {
-        domID: "Editor"
-      }
-    };
   },
   computed: {
     innerStyleObj(): object {
       const defaultStyle = this.styleObj || {}
 
       return defaultStyle
+    },
+    state(): RootState {
+      return this.$store.state
     }
   },
   methods: {
-    async createSandbox(): Promise<Sandbox> {
-      const monaco = await import("monaco-editor");
-      const ts = await import("typescript");
-      const sandbox = createTypeScriptSandbox(this.sandboxConfig, monaco, ts);
-      return sandbox;
-    }
   },
   async mounted() {
-    const sandbox = await this.createSandbox();
-    sandbox.editor.focus();
+    // const sandbox = await this.createSandbox();
+    // sandbox.editor.focus();
   }
 });
 </script>
 
 <style scoped>
 .Editor {
-  width: 500px;
-  height: 500px;
+  width: 50vw;
+  height: calc(100vh - 48px);
 }
 </style>
