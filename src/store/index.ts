@@ -1,15 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { Sandbox } from '@/lib/sandbox'
-import { PlaygroundPlugin } from '@/lib/playground'
-import { activatePlugin } from '@/utils/plugin'
+import { Sandbox } from "@/lib/sandbox";
+import { PlaygroundPlugin } from "@/lib/playground";
+import { activatePlugin } from "@/utils/plugin";
 
 Vue.use(Vuex);
 
 export interface RootState {
-  sandbox: Sandbox | null
-  plugins: PlaygroundPlugin[]
-  currentPlugin: PlaygroundPlugin | null
+  sandbox: Sandbox | null;
+  plugins: PlaygroundPlugin[];
+  currentPlugin: PlaygroundPlugin | null;
 }
 
 export default new Vuex.Store<RootState>({
@@ -20,23 +20,23 @@ export default new Vuex.Store<RootState>({
   },
   mutations: {
     storeSandbox(state, sandbox: Sandbox) {
-      state.sandbox = sandbox
+      state.sandbox = sandbox;
     },
     storePlugins(state, plugins: PlaygroundPlugin[]) {
-      state.plugins = plugins
+      state.plugins = plugins;
     },
     storeCurrentPlugin(state, plugin: PlaygroundPlugin) {
-      state.currentPlugin = plugin
+      state.currentPlugin = plugin;
     }
   },
   actions: {
     storeCurrentPlugin({ commit, state }, plugin: PlaygroundPlugin) {
-      const { sandbox, currentPlugin: previousPlugin } = state
-      if (!sandbox) return
+      const { sandbox, currentPlugin: previousPlugin } = state;
+      if (!sandbox) return;
 
-      activatePlugin(plugin, previousPlugin, sandbox)
+      activatePlugin(plugin, previousPlugin, sandbox);
 
-      commit('storeCurrentPlugin', plugin)
+      commit("storeCurrentPlugin", plugin);
     }
   }
 });

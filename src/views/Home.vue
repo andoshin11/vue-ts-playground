@@ -7,16 +7,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 import Editor from "@/components/Editor";
-import Dragbar from '@/components/Dragbar'
-import Sidebar from "@/components/Sidebar"
+import Dragbar from "@/components/Dragbar";
+import Sidebar from "@/components/Sidebar";
 
 interface IData {
   editorStyle: object;
   sidebarStyle: object;
-  sidebarRef: Element | null
-  setRefInterval: number | null
+  sidebarRef: Element | null;
+  setRefInterval: number | null;
 }
 
 export default Vue.extend({
@@ -31,27 +31,27 @@ export default Vue.extend({
       sidebarStyle: {},
       sidebarRef: null,
       setRefInterval: null
-    }
+    };
   },
   methods: {
     handleDrag(data: { editor: object; sidebar: object }) {
-      const { editor, sidebar } = data
+      const { editor, sidebar } = data;
 
-      this.editorStyle = editor
-      this.sidebarStyle = sidebar
+      this.editorStyle = editor;
+      this.sidebarStyle = sidebar;
     }
   },
   async mounted() {
-    const vm = this
+    const vm = this;
 
     // since original $refs object of Vue is not reactive
     vm.setRefInterval = setInterval(() => {
-      if (vm.sidebarRef && vm.setRefInterval) clearInterval(vm.setRefInterval)
-      const sidebarRef = document.getElementById('Sidebar')
-      if (sidebarRef) vm.sidebarRef = sidebarRef
-    }, 500)
+      if (vm.sidebarRef && vm.setRefInterval) clearInterval(vm.setRefInterval);
+      const sidebarRef = document.getElementById("Sidebar");
+      if (sidebarRef) vm.sidebarRef = sidebarRef;
+    }, 500);
   }
-})
+});
 </script>
 
 <style scoped>
