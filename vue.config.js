@@ -7,5 +7,6 @@ module.exports = {
         languages: ["javascript", "json", "typescript"]
       })
     ]
-  }
+  },
+  transpileDependencies: ["vuetify"]
 };

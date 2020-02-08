@@ -1,28 +1,32 @@
-import Vue, { VNode } from 'vue'
-import { RootState } from '@/store'
-import { Sandbox, createTypeScriptSandbox, PlaygroundConfig } from '@/lib/sandbox'
-import { defaultPluginFactories, PlaygroundPlugin } from '@/lib/playground'
+import Vue, { VNode } from "vue";
+import { RootState } from "@/store";
+import {
+  Sandbox,
+  createTypeScriptSandbox,
+  PlaygroundConfig
+} from "@/lib/sandbox";
+import { defaultPluginFactories, PlaygroundPlugin } from "@/lib/playground";
 
 interface IData {
-  debouncingTimer: boolean
+  debouncingTimer: boolean;
 }
 
 export default Vue.extend({
   data(): IData {
     return {
       debouncingTimer: false
-    }
+    };
   },
   render(h) {
-    const defaultSlot: VNode = this.$slots['default'] as any
+    const defaultSlot: VNode = this.$slots["default"] as any;
 
     // defaultSlot!.elm?.addEventListener('didChangeModelContent', this.handleDidChangeModelContent)
 
-    return defaultSlot
+    return defaultSlot;
   },
   computed: {
     state(): RootState {
-      return this.$store.state
+      return this.$store.state;
     }
   },
   methods: {
@@ -31,17 +35,19 @@ export default Vue.extend({
       const ts = await import("typescript");
       const config: Partial<PlaygroundConfig> = {
         domID: "Editor"
-      }
+      };
       const sandbox = createTypeScriptSandbox(config, monaco, ts);
       return sandbox;
     },
     initPlugins() {
-      const plugins = defaultPluginFactories.map(p => p())
-      this.$store.commit('storePlugins', plugins)
-      const priorityPlugin = this.state.plugins.find(p => p.shouldBeSelected && p.shouldBeSelected())
+      const plugins = defaultPluginFactories.map(p => p());
+      this.$store.commit("storePlugins", plugins);
+      const priorityPlugin = this.state.plugins.find(
+        p => p.shouldBeSelected && p.shouldBeSelected()
+      );
       const selectedPlugin = priorityPlugin || this.state.plugins[0];
       if (selectedPlugin) {
-        this.$store.commit('storeCurrentPlugin', selectedPlugin)
+        this.$store.commit("storeCurrentPlugin", selectedPlugin);
       }
     },
     playgroundDebouncedMainFunction(sandbox: Sandbox) {
@@ -56,14 +62,15 @@ export default Vue.extend({
       localStorage.setItem("sandbox-history", sandbox.getText());
     },
     handleDidChangeModelContent(sandbox: Sandbox) {
-      const vm = this
+      const vm = this;
 
-      const plugin = this.state.currentPlugin
-      if (plugin && plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel());
+      const plugin = this.state.currentPlugin;
+      if (plugin && plugin.modelChanged)
+        plugin.modelChanged(sandbox, sandbox.getModel());
 
       // This needs to be last in the function
       if (this.debouncingTimer) return;
-      this.debouncingTimer = true
+      this.debouncingTimer = true;
 
       setTimeout(() => {
         vm.debouncingTimer = false;
@@ -82,30 +89,31 @@ export default Vue.extend({
     },
     handleDidUpdateCompilerSettings(sandbox: Sandbox) {
       // When any compiler flags are changed, trigger a potential change to the URL
-      this.playgroundDebouncedMainFunction(sandbox)
+      this.playgroundDebouncedMainFunction(sandbox);
 
       const model = sandbox.editor.getModel();
       const plugin = this.state.currentPlugin;
-      if (model && plugin && plugin.modelChanged) plugin.modelChanged(sandbox, model);
+      if (model && plugin && plugin.modelChanged)
+        plugin.modelChanged(sandbox, model);
       if (model && plugin && plugin.modelChangedDebounce)
         plugin.modelChangedDebounce(sandbox, model);
     }
   },
   async mounted() {
-    const vm = this
+    const vm = this;
     // Init sandbox
-    const sandbox = await this.createSandbox()
-    this.$store.commit('storeSandbox', sandbox)
+    const sandbox = await this.createSandbox();
+    this.$store.commit("storeSandbox", sandbox);
 
     // Set plugins
-    this.initPlugins()
+    this.initPlugins();
 
     // Add handler
     sandbox.editor.onDidChangeModelContent(() => {
-      vm.handleDidChangeModelContent(sandbox)
-    })
+      vm.handleDidChangeModelContent(sandbox);
+    });
     sandbox.setDidUpdateCompilerSettings(() => {
-      vm.handleDidUpdateCompilerSettings(sandbox)
-    })
+      vm.handleDidUpdateCompilerSettings(sandbox);
+    });
   }
-})
+});
