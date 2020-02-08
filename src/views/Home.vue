@@ -27,8 +27,12 @@ export default Vue.extend({
   },
   data(): IData {
     return {
-      editorStyle: {},
-      sidebarStyle: {},
+      editorStyle: {
+        width: '50vw'
+      },
+      sidebarStyle: {
+        width: '50vw'
+      },
       sidebarRef: null,
       setRefInterval: null
     };
