@@ -6,12 +6,15 @@ import { activatePlugin } from "@/utils/plugin";
 
 Vue.use(Vuex);
 
+type ThemeType = "sandbox" | "sandbox-dark"
+
 export interface RootState {
   sandbox: Sandbox | null;
   plugins: PlaygroundPlugin[];
   currentPlugin: PlaygroundPlugin | null;
   modelChangedAt: number | null
   modelChangedAtDebouncing: boolean
+  currentTheme: ThemeType | null
 }
 
 export default new Vuex.Store<RootState>({
@@ -20,7 +23,8 @@ export default new Vuex.Store<RootState>({
     plugins: [],
     currentPlugin: null,
     modelChangedAt: null,
-    modelChangedAtDebouncing: false
+    modelChangedAtDebouncing: false,
+    currentTheme: null
   },
   mutations: {
     storeSandbox(state, sandbox: Sandbox) {
@@ -37,6 +41,9 @@ export default new Vuex.Store<RootState>({
     },
     storeModelChangedAtDebouncing(state, val: RootState['modelChangedAtDebouncing'] ) {
       state.modelChangedAtDebouncing = val
+    },
+    storeCurrentTheme(state, theme: ThemeType) {
+      state.currentTheme = theme
     }
   },
   actions: {
@@ -47,6 +54,22 @@ export default new Vuex.Store<RootState>({
       activatePlugin(plugin, previousPlugin, sandbox);
 
       commit("storeCurrentPlugin", plugin);
+    },
+    setTheme({ commit, state }, theme: ThemeType | undefined) {
+      const { sandbox } = state
+      if (!sandbox) return
+      const { editor } = sandbox.monaco
+
+      const newTheme: ThemeType = theme
+        ? theme
+        : localStorage
+        ? localStorage.getItem("editor-theme") as any || "sandbox"
+        : "sandbox";
+
+      editor.setTheme(newTheme);
+
+      localStorage.setItem("editor-theme", newTheme);
+      commit('storeCurrentTheme', newTheme)
     }
   }
 });
