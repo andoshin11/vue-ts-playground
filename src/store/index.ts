@@ -10,13 +10,17 @@ export interface RootState {
   sandbox: Sandbox | null;
   plugins: PlaygroundPlugin[];
   currentPlugin: PlaygroundPlugin | null;
+  modelChangedAt: number | null
+  modelChangedAtDebouncing: boolean
 }
 
 export default new Vuex.Store<RootState>({
   state: {
     sandbox: null,
     plugins: [],
-    currentPlugin: null
+    currentPlugin: null,
+    modelChangedAt: null,
+    modelChangedAtDebouncing: false
   },
   mutations: {
     storeSandbox(state, sandbox: Sandbox) {
@@ -27,6 +31,12 @@ export default new Vuex.Store<RootState>({
     },
     storeCurrentPlugin(state, plugin: PlaygroundPlugin) {
       state.currentPlugin = plugin;
+    },
+    storeModelChangedAt(state, val: RootState['modelChangedAt']) {
+      state.modelChangedAt = val
+    },
+    storeModelChangedAtDebouncing(state, val: RootState['modelChangedAtDebouncing'] ) {
+      state.modelChangedAtDebouncing = val
     }
   },
   actions: {
