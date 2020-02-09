@@ -1,7 +1,4 @@
-import { PlaygroundConfig } from ".";
-
-type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions;
-type Monaco = typeof import("monaco-editor");
+import { PlaygroundConfig, Monaco, CompilerOptions } from "./types";
 
 /**
  * These are the defaults, but they also act as the list of all compiler options
@@ -10,8 +7,8 @@ type Monaco = typeof import("monaco-editor");
 export function getDefaultSandboxCompilerOptions(
   config: PlaygroundConfig,
   monaco: Monaco
-) {
-  const settings: CompilerOptions = {
+): CompilerOptions {
+  return {
     noImplicitAny: true,
     strictNullChecks: !config.useJavaScript,
     strictFunctionTypes: true,
@@ -50,9 +47,7 @@ export function getDefaultSandboxCompilerOptions(
     target: monaco.languages.typescript.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.React,
     module: monaco.languages.typescript.ModuleKind.ESNext
-  };
-
-  return settings;
+  }
 }
 
 /**
@@ -63,8 +58,8 @@ export const getCompilerOptionsFromParams = (
   options: CompilerOptions,
   params: URLSearchParams
 ): CompilerOptions => {
-  const urlDefaults = Object.entries(options).reduce(
-    (acc: any, [key, value]) => {
+  const urlDefaults = Object.keys(options).reduce(
+    (acc: any, key) => {
       if (params.has(key)) {
         const urlValue = params.get(key)!;
 
@@ -92,7 +87,7 @@ export const getURLQueryWithCompilerOptions = (
   sandbox: any,
   paramOverrides?: any
 ): string => {
-  const compilerOptions = sandbox.getCompilerOptions();
+  const compilerOptions = sandbox.compilerOptions;
   const compilerDefaults = sandbox.compilerDefaults;
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
     if (value !== compilerDefaults[key]) {
