@@ -1,12 +1,7 @@
 <template>
-  <div>
-    <header class="Header">
-      <div class="logo">TS Playground by Vue</div>
-    </header>
-    <v-app-bar>
-      <v-toolbar-title>Page title</v-toolbar-title>
-    </v-app-bar>
-  </div>
+  <v-app-bar dense color="#187abf" dark>
+    <v-toolbar-title>TS Playground by Vue</v-toolbar-title>
+  </v-app-bar>
 </template>
 
 <script lang="ts">
