@@ -1,11 +1,12 @@
+import { Sandbox } from './sandbox'
+import { CompilerOptions } from './types'
+
 const booleanConfigRegexp = /^\/\/\s?@(\w+)$/;
 
 // https://regex101.com/r/8B2Wwh/1
 const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/;
 
-type Sandbox = ReturnType<typeof import(".").createTypeScriptSandbox>;
 type TS = typeof import("typescript");
-type CompilerOptions = import("typescript").CompilerOptions;
 
 /**
  * This is a port of the twoslash bit which grabs compiler options

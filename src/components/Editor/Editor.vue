@@ -8,7 +8,6 @@
 import Vue from "vue";
 import { RootState } from "@/store";
 import {
-  createTypeScriptSandbox,
   PlaygroundConfig,
   Sandbox
 } from "@/lib/sandbox";
