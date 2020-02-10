@@ -3,7 +3,7 @@
     <v-list-item ripple>
       <v-list-item-title>
         <span @click="reportIssue" >
-          Report GitHub issue on TypeScript
+          Report GitHub issue
         </span>
       </v-list-item-title>
     </v-list-item>
@@ -53,9 +53,17 @@ export default Vue.extend({
       if (!this.exporter) return
       this.exporter.openInCodeSandbox()
     },
-    reportIssue() {
+    async reportIssue() {
       if (!this.exporter) return
-      this.exporter.reportIssue(this.$route)
+      const body = await this.exporter.reportIssue(this.$route)
+
+      if (body) {
+        // content was too long.
+        this.$store.commit('storeModalForCode', {
+          code: body,
+          subtitle: "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin."
+        })
+      }
     }
   }
 })

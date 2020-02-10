@@ -173,14 +173,7 @@ ${codify(this.stringifiedCompilerOptions(), "json")}
           encodeURIComponent(body)
       );
     } else {
-      // ui.showModal(
-      //   body,
-      //   "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
-      //   {
-      //     "Create New Issue":
-      //       "https://github.com/Microsoft/TypeScript/issues/new"
-      //   }
-      // );
+      return body
     }
   }
 }
