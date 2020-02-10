@@ -164,4 +164,23 @@ ${codify(this.stringifiedCompilerOptions(), "json")}
 **Playground Link:** [Provided](${fullURL})
       `;
   }
+
+  async reportIssue(route: Route) {
+    const body = await this.makeMarkdown(route);
+    if (body.length < 4000) {
+      window.open(
+        "https://github.com/andoshin11/vue-ts-playground/issues/new?body=" +
+          encodeURIComponent(body)
+      );
+    } else {
+      // ui.showModal(
+      //   body,
+      //   "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
+      //   {
+      //     "Create New Issue":
+      //       "https://github.com/Microsoft/TypeScript/issues/new"
+      //   }
+      // );
+    }
+  }
 }

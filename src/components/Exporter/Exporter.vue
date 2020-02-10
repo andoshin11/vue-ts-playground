@@ -2,6 +2,16 @@
   <v-list>
     <v-list-item ripple>
       <v-list-item-title>
+        <span @click="reportIssue" >
+          Report GitHub issue on TypeScript
+        </span>
+      </v-list-item-title>
+    </v-list-item>
+
+    <v-divider></v-divider>
+
+    <v-list-item ripple>
+      <v-list-item-title>
         <span @click="openInASTViewer" >
           Open in TypeScript AST Viewer
         </span>
@@ -15,7 +25,7 @@
         </span>
       </v-list-item-title>
     </v-list-item>
-  </v-list>  
+  </v-list>
 </template>
 
 <script lang="ts">
@@ -42,6 +52,10 @@ export default Vue.extend({
     openInCodeSandbox() {
       if (!this.exporter) return
       this.exporter.openInCodeSandbox()
+    },
+    reportIssue() {
+      if (!this.exporter) return
+      this.exporter.reportIssue(this.$route)
     }
   }
 })
