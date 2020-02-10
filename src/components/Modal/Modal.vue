@@ -10,7 +10,9 @@
           <div class="modal-container-header">
             <div class="close" @click="$emit('close')" />
           </div>
-          <slot />
+          <div class="body">
+            <slot />
+          </div>
         </div>
       </div>
     </transition>
@@ -59,10 +61,10 @@ export default Vue.extend({
   right: 0;
   left: 0;
   margin: auto;
-  overflow: auto;
-  width: 100%;
-  max-width: 560px;
+  width: 80%;
   max-height: 80vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
@@ -90,12 +92,11 @@ export default Vue.extend({
 }
 .modal-container-header {
   width: 100%;
-  max-width: 1008px;
-  margin: 0 auto 16px;
   min-height: 64px;
   position: relative;
   z-index: 1;
 }
+
 .modal-container-header img {
   margin: 24px 16px;
 }

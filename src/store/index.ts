@@ -8,6 +8,11 @@ Vue.use(Vuex);
 
 type ThemeType = "sandbox" | "sandbox-dark"
 
+type ModalForCode = {
+  code: string,
+  subtitle: string
+}
+
 export interface RootState {
   sandbox: Sandbox | null;
   plugins: PlaygroundPlugin[];
@@ -15,6 +20,7 @@ export interface RootState {
   modelChangedAt: number | null
   modelChangedAtDebouncing: boolean
   currentTheme: ThemeType | null
+  modalForCode: ModalForCode | null
 }
 
 export default new Vuex.Store<RootState>({
@@ -24,7 +30,8 @@ export default new Vuex.Store<RootState>({
     currentPlugin: null,
     modelChangedAt: null,
     modelChangedAtDebouncing: false,
-    currentTheme: null
+    currentTheme: null,
+    modalForCode: null
   },
   mutations: {
     storeSandbox(state, sandbox: Sandbox) {
@@ -44,6 +51,9 @@ export default new Vuex.Store<RootState>({
     },
     storeCurrentTheme(state, theme: ThemeType) {
       state.currentTheme = theme
+    },
+    storeModalForCode(state, info: ModalForCode | null) {
+      state.modalForCode = info
     }
   },
   actions: {
