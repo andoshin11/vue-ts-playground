@@ -14,7 +14,7 @@ declare module 'vue/types/options' {
       sandbox: Sandbox,
       model: ModelType,
       vm: V
-    ) => void;
+    ) => (void | Promise<void>);
     /** Delayed model changes while this plugin is actively selected, useful when you are working with the TS API because it won't run on every keypress */
     modelChangedDebounce?: (
       sandbox: Sandbox,
