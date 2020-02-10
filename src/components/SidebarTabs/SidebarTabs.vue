@@ -20,7 +20,7 @@ export default Vue.extend({
   props: {
     plugins: {
       type: Array as () => PlaygroundPlugin[],
-      default: []
+      default: () => []
     },
     currentPluginId: {
       type: String,
@@ -29,7 +29,7 @@ export default Vue.extend({
   },
   methods: {
     changePlugin(plugin: PlaygroundPlugin) {
-      this.$store.dispatch("storeCurrentPlugin", plugin);
+      this.$store.commit("storeCurrentPlugin", plugin);
     }
   }
 });

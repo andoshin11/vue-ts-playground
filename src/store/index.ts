@@ -2,7 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { Sandbox } from "@/lib/sandbox";
 import { PlaygroundPlugin } from "@/lib/playground";
-import { activatePlugin } from "@/utils/plugin";
 
 Vue.use(Vuex);
 
@@ -57,14 +56,6 @@ export default new Vuex.Store<RootState>({
     }
   },
   actions: {
-    storeCurrentPlugin({ commit, state }, plugin: PlaygroundPlugin) {
-      const { sandbox, currentPlugin: previousPlugin } = state;
-      if (!sandbox) return;
-
-      activatePlugin(plugin, previousPlugin, sandbox);
-
-      commit("storeCurrentPlugin", plugin);
-    },
     setTheme({ commit, state }, theme: ThemeType | undefined) {
       const { sandbox } = state
       if (!sandbox) return
