@@ -46,7 +46,7 @@ export default Vue.extend({
 
 .tab {
   font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
-  margin: 5px 2px;
+  margin: 5px 8px;
   padding-top: 0;
   font-size: 14px;
   font-weight: 600;
@@ -55,9 +55,12 @@ export default Vue.extend({
   border: none;
   cursor: pointer;
   outline: inherit;
+  border-bottom: 1px solid transparent;
+  transition: .3s;
 }
 
-.tab.active {
+.tab.active,
+.tab:hover {
   border-bottom: 1px solid #187abf;
 }
 </style>
