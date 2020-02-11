@@ -16,7 +16,7 @@ export default Vue.extend({
   watch: {
     modelChangedAt: {
       immediate: true,
-      handler(val: number | null) {
+      async handler(val: number | null) {
         // console.log('Invoking wrapper handler')
         const { $pluginHooks } = this
         const { sandbox } = this.state
@@ -25,14 +25,13 @@ export default Vue.extend({
         if (!val) return
         // Invoke update function
         if ($pluginHooks && $pluginHooks.modelChanged) {
-          $pluginHooks.modelChanged(sandbox, sandbox.getModel(), this)
+          await $pluginHooks.modelChanged(sandbox, sandbox.getModel(), this)
         }
 
         // FIXME: Handle debouncing
         // Invoke debounce function
-
         if ($pluginHooks && $pluginHooks.modelChangedDebounce) {
-          $pluginHooks.modelChangedDebounce(sandbox, sandbox.getModel(), this)
+          await $pluginHooks.modelChangedDebounce(sandbox, sandbox.getModel(), this)
         }
       }
     },
@@ -42,7 +41,6 @@ export default Vue.extend({
     const { pluginHooks } = (this.$options as any).__proto__
     if (!pluginHooks) return
 
-    // @ts-ignore
     this['$pluginHooks'] = pluginHooks
   }
 })
