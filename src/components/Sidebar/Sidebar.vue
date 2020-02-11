@@ -9,6 +9,7 @@
       :plugins="state.plugins"
       :currentPluginId="state.currentPlugin && state.currentPlugin.id"
     />
+    <PluginContainer/>
   </div>
 </template>
 
@@ -16,10 +17,12 @@
 import Vue from "vue";
 import { RootState } from "@/store";
 import Tabs from "@/components/SidebarTabs";
+import PluginContainer from '@/components/PluginContainer'
 
 export default Vue.extend({
   components: {
-    Tabs
+    Tabs,
+    PluginContainer
   },
   props: {
     styleObj: {
