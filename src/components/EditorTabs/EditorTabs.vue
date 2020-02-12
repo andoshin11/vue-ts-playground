@@ -70,9 +70,9 @@ import { updateTSVersion } from '@/utils/router'
 import ConfigOptions from '@/components/ConfigOptions'
 import Theme from '@/components/Theme'
 import Exporter from '@/components/Exporter'
+import { MONACO_TS_VERSIONS } from '@/const'
 
 interface IData {
-  showVersions: boolean;
   on: boolean
 }
 
@@ -84,7 +84,6 @@ export default Vue.extend({
   },
   data(): IData {
     return {
-      showVersions: false,
       on: false
     };
   },
@@ -97,8 +96,7 @@ export default Vue.extend({
       return sandbox && sandbox.ts.version;
     },
     allVersions(): string[] {
-      const { sandbox } = this.state;
-      return ["3.8.0-beta", ...(sandbox ? sandbox.supportedVersions : [])];
+      return MONACO_TS_VERSIONS
     }
   },
   methods: {
@@ -148,10 +146,6 @@ export default Vue.extend({
   height: 100%;
   outline: none;
   margin: 0 -16px;
+  font-weight: bold;
 }
-
-/* .tabAction:focus {
-  background-color: #ddd;
-  opacity: .7;
-} */
 </style>
