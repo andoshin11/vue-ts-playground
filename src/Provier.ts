@@ -1,27 +1,12 @@
 import Vue, { VNode } from "vue";
 import { RootState } from "@/store";
-import {
-  Sandbox,
-  createTypeScriptSandbox,
-  PlaygroundConfig
-} from "@/lib/sandbox";
-import { defaultPluginFactories, PlaygroundPlugin } from "@/lib/playground";
-
-interface IData {
-  debouncingTimer: boolean;
-}
+import { Sandbox, PlaygroundConfig } from "@/lib/sandbox";
+import { pluginFactories, defaultPlugins, pickInitialPlugin } from "@/lib/playground";
+import { getURLQueryWithCompilerOptions } from "@/utils/router";
 
 export default Vue.extend({
-  data(): IData {
-    return {
-      debouncingTimer: false
-    };
-  },
-  render(h) {
+  render(): VNode {
     const defaultSlot: VNode = this.$slots["default"] as any;
-
-    // defaultSlot!.elm?.addEventListener('didChangeModelContent', this.handleDidChangeModelContent)
-
     return defaultSlot;
   },
   computed: {
@@ -31,23 +16,17 @@ export default Vue.extend({
   },
   methods: {
     async createSandbox(): Promise<Sandbox> {
-      const monaco = await import("monaco-editor");
-      const ts = await import("typescript");
       const config: Partial<PlaygroundConfig> = {
         domID: "Editor"
       };
-      const sandbox = createTypeScriptSandbox(config, monaco, ts);
-      return sandbox;
+      return new Sandbox(window.main, config, window.ts);
     },
     initPlugins() {
-      const plugins = defaultPluginFactories.map(p => p());
+      const plugins = pluginFactories(Vue)(defaultPlugins);
       this.$store.commit("storePlugins", plugins);
-      const priorityPlugin = this.state.plugins.find(
-        p => p.shouldBeSelected && p.shouldBeSelected()
-      );
-      const selectedPlugin = priorityPlugin || this.state.plugins[0];
-      if (selectedPlugin) {
-        this.$store.commit("storeCurrentPlugin", selectedPlugin);
+      const initialPlugin = pickInitialPlugin(this.state.plugins)
+      if (initialPlugin) {
+        this.$store.commit("storeCurrentPlugin", initialPlugin);
       }
     },
     playgroundDebouncedMainFunction(sandbox: Sandbox) {
@@ -55,25 +34,40 @@ export default Vue.extend({
 
       const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type");
       if (alwaysUpdateURL) {
-        const newURL = sandbox.getURLQueryWithCompilerOptions(sandbox);
-        window.history.replaceState({}, "", newURL);
+        const newURL = getURLQueryWithCompilerOptions(sandbox, this.$route, {
+          ts: sandbox.ts.version
+        });
+        // const digest = {
+        //   ...newURL,
+        //   hash: (newURL.hash || '').slice(0, 20) + '...'
+        // }
+        // console.log(`[Saving changes]: ${JSON.stringify(digest)}`);
+        this.$router.replace(
+          newURL,
+          () => {},
+          () => {}
+        );
       }
 
       localStorage.setItem("sandbox-history", sandbox.getText());
     },
     handleDidChangeModelContent(sandbox: Sandbox) {
       const vm = this;
+      const timestamp = new Date().getTime();
+
+      this.$store.commit("storeModelChangedAt", timestamp);
 
       const plugin = this.state.currentPlugin;
-      if (plugin && plugin.modelChanged)
-        plugin.modelChanged(sandbox, sandbox.getModel());
+      // if (plugin && plugin.modelChanged)
+      //   plugin.modelChanged(sandbox, sandbox.getModel());
 
       // This needs to be last in the function
-      if (this.debouncingTimer) return;
-      this.debouncingTimer = true;
+      // if (this.state.modelChangedAtDebouncing) return;
+      this.$store.commit("storeModelChangedAtDebouncing", true);
 
       setTimeout(() => {
-        vm.debouncingTimer = false;
+        // FIXME: handle debounce
+        // vm.$store.commit("storeModelChangedAtDebouncing", false);
         vm.playgroundDebouncedMainFunction(sandbox);
 
         // Only call the plugin function once every 0.3s
@@ -83,7 +77,7 @@ export default Vue.extend({
           plugin.modelChangedDebounce &&
           plugin.id === vm.state.currentPlugin.id
         ) {
-          plugin.modelChangedDebounce(sandbox, sandbox.getModel());
+          // plugin.modelChangedDebounce(sandbox, sandbox.getModel());
         }
       }, 300);
     },
@@ -115,5 +109,8 @@ export default Vue.extend({
     sandbox.setDidUpdateCompilerSettings(() => {
       vm.handleDidUpdateCompilerSettings(sandbox);
     });
+
+    // Trigger with initial data
+    vm.handleDidChangeModelContent(sandbox);
   }
 });
