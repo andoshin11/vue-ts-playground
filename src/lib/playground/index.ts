@@ -1,9 +1,15 @@
+import Vue, { VueConstructor } from 'vue'
 import { Sandbox } from "@/lib/sandbox";
+import PluginWrapper from '@/mixins/PluginWrapper'
 type Monaco = typeof import("monaco-editor");
 
 declare const window: any;
 
-import { compiledJSPlugin } from "./sidebar/showJS";
+import { showJSPlugin } from '@/lib/playground/plugins/showJS'
+import { showDTSPlugin } from '@/lib/playground/plugins/showDTS'
+import { showErrorsPlugin } from '@/lib/playground/plugins/showErrors'
+import { showTypesPlugin } from '@/lib/playground/plugins/showTypes'
+import { showLogsPlugin } from '@/lib/playground/plugins/showLogs'
 import {
   createSidebar,
   createTabForPlugin,
@@ -13,17 +19,13 @@ import {
   createDragBar,
   setupSidebarToggle
 } from "./createElements";
-import { showDTSPlugin } from "./sidebar/showDTS";
-import { runWithCustomLogs, runPlugin } from "./sidebar/runtime";
 import { createExporter } from "./exporter";
-import { createUI } from "./createUI";
 import { getExampleSourceCode } from "./getExample";
 import { ExampleHighlighter } from "./monaco/ExampleHighlight";
 import {
   createConfigDropdown,
   updateConfigDropdownForCompilerOptions
 } from "./createConfigDropdown";
-import { showErrors } from "./sidebar/showErrors";
 import {
   optionsPlugin,
   allowConnectingToLocalhost,
@@ -56,6 +58,7 @@ export interface PlaygroundPlugin {
   willUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void;
   /** After we remove the tab */
   didUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void;
+  component?: VueConstructor
 }
 
 interface PlaygroundConfig {
@@ -63,29 +66,60 @@ interface PlaygroundConfig {
   prefix: string;
 }
 
-const defaultPluginFactories: (() => PlaygroundPlugin)[] = [
-  compiledJSPlugin,
+export const pluginNameFromID = (id: string) => `Plugin-ID-${id}`
+
+export const defaultPlugins: PlaygroundPlugin[] = [
+  showJSPlugin,
   showDTSPlugin,
-  showErrors,
-  runPlugin,
-  optionsPlugin
-];
+  showErrorsPlugin,
+  showLogsPlugin
+  // showTypesPlugin
+]
+
+export const pluginFactories = (v: VueConstructor) => (plugins: PlaygroundPlugin[]) => {
+  plugins.forEach(p => {
+    const pluginName = pluginNameFromID(p.id)
+    // Register components
+    if (p.component) {
+      v.component(pluginName, Vue.extend({ mixins: [PluginWrapper, p.component] }))
+    }
+
+    // TODO: check initialization function
+  })
+  return plugins
+};
+
+export const pickInitialPlugin = (plugins: PlaygroundPlugin[]): PlaygroundPlugin | null => {
+  const priorityPlugin = plugins.find(
+    p => p.shouldBeSelected && p.shouldBeSelected()
+  );
+  return priorityPlugin || plugins[0] || null
+}
+
+// export const defaultPluginFactories: ((v: Vue) => PlaygroundPlugin)[] = [
+//   // compiledJSPlugin,
+//   // showDTSPlugin,
+//   // showErrors,
+//   // runPlugin,
+//   // optionsPlugin
+//   showJSPlugin
+// ];
 
 export const setupPlayground = (
   sandbox: Sandbox,
   monaco: Monaco,
   config: PlaygroundConfig
 ) => {
-  const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!
+  const playgroundParent = sandbox.getDomNode()!.parentElement!.parentElement!
     .parentElement!;
-  const dragBar = createDragBar();
-  playgroundParent.appendChild(dragBar);
+  // const dragBar = createDragBar();
+  // playgroundParent.appendChild(dragBar);
 
   const sidebar = createSidebar();
-  playgroundParent.appendChild(sidebar);
+  // playgroundParent.appendChild(sidebar);
 
   const tabBar = createTabBar();
-  sidebar.appendChild(tabBar);
+  // sidebar.appendChild(tabBar);
 
   const container = createPluginContainer();
   sidebar.appendChild(container);
@@ -93,60 +127,60 @@ export const setupPlayground = (
   const plugins = [] as PlaygroundPlugin[];
   const tabs = [] as HTMLButtonElement[];
 
-  const registerPlugin = (plugin: PlaygroundPlugin) => {
-    plugins.push(plugin);
+  // const registerPlugin = (plugin: PlaygroundPlugin) => {
+  //   plugins.push(plugin);
 
-    const tab = createTabForPlugin(plugin);
-    tabs.push(tab);
+  //   const tab = createTabForPlugin(plugin);
+  //   tabs.push(tab);
 
-    const tabClicked: HTMLElement["onclick"] = e => {
-      const previousPlugin = currentPlugin();
-      const newTab = e.target as HTMLElement;
-      const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!;
-      activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container);
-    };
+  //   // const tabClicked: HTMLElement["onclick"] = e => {
+  //   //   const previousPlugin = currentPlugin();
+  //   //   const newTab = e.target as HTMLElement;
+  //   //   const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!;
+  //   //   activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container);
+  //   // };
 
-    tabBar.appendChild(tab);
-    tab.onclick = tabClicked;
-  };
+  //   tabBar.appendChild(tab);
+  //   // tab.onclick = tabClicked;
+  // };
 
   const currentPlugin = () => {
     const selectedTab = tabs.find(t => t.classList.contains("active"))!;
     return plugins[tabs.indexOf(selectedTab)];
   };
 
-  const initialPlugins = defaultPluginFactories.map(f => f());
-  initialPlugins.forEach(p => registerPlugin(p));
+  // const initialPlugins = defaultPluginFactories.map(f => f());
+  // initialPlugins.forEach(p => registerPlugin(p));
 
   // Choose which should be selected
   const priorityPlugin = plugins.find(
     plugin => plugin.shouldBeSelected && plugin.shouldBeSelected()
   );
-  const selectedPlugin = priorityPlugin || plugins[0];
-  const selectedTab = tabs[plugins.indexOf(selectedPlugin)]!;
-  selectedTab.onclick!({ target: selectedTab } as any);
+  // const selectedPlugin = priorityPlugin || plugins[0];
+  // const selectedTab = tabs[plugins.indexOf(selectedPlugin)]!;
+  // selectedTab.onclick!({ target: selectedTab } as any);
 
-  let debouncingTimer = false;
-  sandbox.editor.onDidChangeModelContent(_event => {
-    const plugin = currentPlugin();
-    if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel());
+  // let debouncingTimer = false;
+  // sandbox.editor.onDidChangeModelContent(_event => {
+  //   const plugin = currentPlugin();
+  //   if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel());
 
-    // This needs to be last in the function
-    if (debouncingTimer) return;
-    debouncingTimer = true;
-    setTimeout(() => {
-      debouncingTimer = false;
-      playgroundDebouncedMainFunction();
+  //   // This needs to be last in the function
+  //   if (debouncingTimer) return;
+  //   debouncingTimer = true;
+  //   setTimeout(() => {
+  //     debouncingTimer = false;
+  //     playgroundDebouncedMainFunction();
 
-      // Only call the plugin function once every 0.3s
-      if (
-        plugin.modelChangedDebounce &&
-        plugin.displayName === currentPlugin().displayName
-      ) {
-        plugin.modelChangedDebounce(sandbox, sandbox.getModel());
-      }
-    }, 300);
-  });
+  //     // Only call the plugin function once every 0.3s
+  //     if (
+  //       plugin.modelChangedDebounce &&
+  //       plugin.displayName === currentPlugin().displayName
+  //     ) {
+  //       plugin.modelChangedDebounce(sandbox, sandbox.getModel());
+  //     }
+  //   }, 300);
+  // });
 
   // Sets the URL and storage of the sandbox string
   const playgroundDebouncedMainFunction = () => {
@@ -160,90 +194,82 @@ export const setupPlayground = (
   };
 
   // When any compiler flags are changed, trigger a potential change to the URL
-  sandbox.setDidUpdateCompilerSettings(() => {
-    playgroundDebouncedMainFunction();
+  // sandbox.setDidUpdateCompilerSettings(() => {
+  //   playgroundDebouncedMainFunction();
 
-    const model = sandbox.editor.getModel();
-    const plugin = currentPlugin();
-    if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model);
-    if (model && plugin.modelChangedDebounce)
-      plugin.modelChangedDebounce(sandbox, model);
-  });
+  //   const model = sandbox.editor.getModel();
+  //   const plugin = currentPlugin();
+  //   if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model);
+  //   if (model && plugin.modelChangedDebounce)
+  //     plugin.modelChangedDebounce(sandbox, model);
+  // });
 
   // Setup working with the existing UI, once it's loaded
 
   // Versions of TypeScript
 
   // Set up the label for the dropdown
-  document.querySelectorAll("#versions > a").item(0).innerHTML =
-    "v" + sandbox.ts.version + " <span class='caret'/>";
+  // document.querySelectorAll("#versions > a").item(0).innerHTML =
+  // "v" + sandbox.ts.version + " <span class='caret'/>";
 
   // Add the versions to the dropdown
-  const versionsMenu = document.querySelectorAll("#versions > ul").item(0);
-  const allVersions = ["3.8.0-beta", ...sandbox.supportedVersions];
-  allVersions.forEach((v: string) => {
-    const li = document.createElement("li");
-    const a = document.createElement("a");
-    a.textContent = v;
-    a.href = "#";
+  // const versionsMenu = document.querySelectorAll("#versions > ul").item(0);
+  // const allVersions = ["3.8.0-beta", ...sandbox.supportedVersions];
+  // allVersions.forEach((v: string) => {
+  //   const li = document.createElement("li");
+  //   const a = document.createElement("a");
+  //   a.textContent = v;
+  //   a.href = "#";
 
-    li.onclick = () => {
-      const currentURL = sandbox.getURLQueryWithCompilerOptions(sandbox);
-      const params = new URLSearchParams(currentURL.split("#")[0]);
-      params.set("ts", v);
-      const hash = document.location.hash.length ? document.location.hash : "";
-      const newURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${params}${hash}`;
+  //   li.onclick = () => {
+  //     const currentURL = sandbox.getURLQueryWithCompilerOptions(sandbox);
+  //     const params = new URLSearchParams(currentURL.split("#")[0]);
+  //     params.set("ts", v);
+  //     const hash = document.location.hash.length ? document.location.hash : "";
+  //     const newURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${params}${hash}`;
 
-      // @ts-ignore - it is allowed
-      document.location = newURL;
-    };
+  //     // @ts-ignore - it is allowed
+  //     document.location = newURL;
+  //   };
 
-    li.appendChild(a);
-    versionsMenu.appendChild(li);
-  });
+  //   li.appendChild(a);
+  //   versionsMenu.appendChild(li);
+  // });
 
   // Support dropdowns
-  document.querySelectorAll(".navbar-sub li.dropdown > a").forEach(link => {
-    const a = link as HTMLAnchorElement;
-    a.onclick = _e => {
-      if (a.parentElement!.classList.contains("open")) {
-        document
-          .querySelectorAll(".navbar-sub li.open")
-          .forEach(i => i.classList.remove("open"));
-      } else {
-        document
-          .querySelectorAll(".navbar-sub li.open")
-          .forEach(i => i.classList.remove("open"));
-        a.parentElement!.classList.toggle("open");
+  // document.querySelectorAll(".navbar-sub li.dropdown > a").forEach(link => {
+  //   const a = link as HTMLAnchorElement;
+  //   a.onclick = _e => {
+  //     if (a.parentElement!.classList.contains("open")) {
+  //       document
+  //         .querySelectorAll(".navbar-sub li.open")
+  //         .forEach(i => i.classList.remove("open"));
+  //     } else {
+  //       document
+  //         .querySelectorAll(".navbar-sub li.open")
+  //         .forEach(i => i.classList.remove("open"));
+  //       a.parentElement!.classList.toggle("open");
 
-        const exampleContainer = a
-          .closest("li")!
-          .getElementsByTagName("ul")
-          .item(0)!;
+  //       const exampleContainer = a
+  //         .closest("li")!
+  //         .getElementsByTagName("ul")
+  //         .item(0)!;
 
-        // SEt exact height and widths for the popovers for the main playground navigation
-        const isPlaygroundSubmenu = !!a.closest("nav");
-        if (isPlaygroundSubmenu) {
-          const playgroundContainer = document.getElementById(
-            "playground-container"
-          )!;
-          exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect()
-            .height + 26}px - 4rem)`;
+  //       // SEt exact height and widths for the popovers for the main playground navigation
+  //       const isPlaygroundSubmenu = !!a.closest("nav");
+  //       if (isPlaygroundSubmenu) {
+  //         const playgroundContainer = document.getElementById(
+  //           "playground-container"
+  //         )!;
+  //         exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect()
+  //           .height + 26}px - 4rem)`;
 
-          const width = window.localStorage.getItem("dragbar-x");
-          exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`;
-        }
-      }
-    };
-  });
-
-  const runButton = document.getElementById("run-button")!;
-  runButton.onclick = () => {
-    const run = sandbox.getRunnableJS();
-    const runPlugin = plugins.find(p => p.id === "logs")!;
-    activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container);
-    runWithCustomLogs(run);
-  };
+  //         const width = window.localStorage.getItem("dragbar-x");
+  //         exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`;
+  //       }
+  //     }
+  //   };
+  // });
 
   // Handle the close buttons on the examples
   document.querySelectorAll("button.examples-close").forEach(b => {
@@ -326,75 +352,66 @@ export const setupPlayground = (
     document.location = fullURL;
   };
 
-  const ui = createUI();
-  const exporter = createExporter(sandbox, monaco, ui);
-
-  const playground = {
-    exporter,
-    ui,
-    registerPlugin
-  };
-
   window.ts = sandbox.ts;
   window.sandbox = sandbox;
-  window.playground = playground;
+  // window.playground = playground;
 
   console.log(`Using TypeScript ${window.ts.version}`);
 
   console.log("Available globals:");
   console.log("\twindow.ts", window.ts);
   console.log("\twindow.sandbox", window.sandbox);
-  console.log("\twindow.playground", window.playground);
+  // console.log("\twindow.playground", window.playground);
 
   // Dev mode plugin
-  if (allowConnectingToLocalhost()) {
-    window.exports = {};
-    console.log("Connecting to dev plugin");
-    try {
-      // @ts-ignore
-      const re = window.require;
-      re(["local/index"], (devPlugin: any) => {
-        console.log("Set up dev plugin from localhost:5000");
-        console.log(devPlugin);
-        playground.registerPlugin(devPlugin);
+  // if (allowConnectingToLocalhost()) {
+  //   window.exports = {};
+  //   console.log("Connecting to dev plugin");
+  //   try {
+  //     // @ts-ignore
+  //     const re = window.require;
+  //     re(["local/index"], (devPlugin: any) => {
+  //       console.log("Set up dev plugin from localhost:5000");
+  //       console.log(devPlugin);
+  //       playground.registerPlugin(devPlugin);
 
-        // Auto-select the dev plugin
-        activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container);
-      });
-    } catch (error) {
-      console.error("Problem loading up the dev plugin");
-      console.error(error);
-    }
-  }
+  //       // Auto-select the dev plugin
+  //       activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container);
+  //     });
+  //   } catch (error) {
+  //     console.error("Problem loading up the dev plugin");
+  //     console.error(error);
+  //   }
+  // }
 
-  activePlugins().forEach(plugin => {
-    try {
-      // @ts-ignore
-      const re = window.require;
-      re(
-        [`unpkg/${plugin.module}@latest/dist/index`],
-        (devPlugin: PlaygroundPlugin) => {
-          playground.registerPlugin(devPlugin);
+  // activePlugins().forEach(plugin => {
+  //   try {
+  //     // @ts-ignore
+  //     const re = window.require;
+  //     re(
+  //       [`unpkg/${plugin.module}@latest/dist/index`],
+  //       (devPlugin: PlaygroundPlugin) => {
+  //         playground.registerPlugin(devPlugin);
 
-          // Auto-select the dev plugin
-          if (devPlugin.shouldBeSelected && devPlugin.shouldBeSelected()) {
-            activatePlugin(
-              devPlugin,
-              currentPlugin(),
-              sandbox,
-              tabBar,
-              container
-            );
-          }
-        }
-      );
-    } catch (error) {
-      console.error("Problem loading up the plugin:", plugin);
-      console.error(error);
-    }
-  });
+  //         // Auto-select the dev plugin
+  //         if (devPlugin.shouldBeSelected && devPlugin.shouldBeSelected()) {
+  //           activatePlugin(
+  //             devPlugin,
+  //             currentPlugin(),
+  //             sandbox,
+  //             tabBar,
+  //             container
+  //           );
+  //         }
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.error("Problem loading up the plugin:", plugin);
+  //     console.error(error);
+  //   }
+  // });
 
-  return playground;
+  // return playground;
 };
 
 export type Playground = ReturnType<typeof setupPlayground>;

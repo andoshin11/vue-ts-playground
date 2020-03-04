@@ -4,6 +4,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import { getLatestMonacoTSVersion } from "@/utils"
 
 Vue.config.productionTip = false;
 
@@ -29,13 +30,13 @@ async function main() {
 
   // Check available version:
   // https://typescript.azureedge.net/indexes/releases.json
-  const tsVersoin = new URLSearchParams(location.search).get('ts') || '3.7.5'
+  const tsVersoin = new URLSearchParams(location.search).get('ts') || getLatestMonacoTSVersion()
 
   re.config({
     paths: {
       vs: `https://typescript.azureedge.net/cdn/${tsVersoin}/monaco/min/vs`
     },
-    // This is something you need for monaco to work
+    // We need this for monaco to work
     ignoreDuplicateModules: ['vs/editor/editor.main'],
   })
 

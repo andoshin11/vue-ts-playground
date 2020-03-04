@@ -262,4 +262,27 @@ export class Sandbox {
     console.log(program.getSourceFiles());
     return program.getSourceFile(this.filePath.path)!;
   }
+
+  getScriptTargetText(option: any) {
+    return this.monaco.languages.typescript.ScriptTarget[option]
+  }
+
+  getJsxEmitText(option: any) {
+    if (option === this.monaco.languages.typescript.JsxEmit.None) {
+      return undefined;
+    }
+    return this.monaco.languages.typescript.JsxEmit[option].toLowerCase();
+  }
+
+  getModuleKindText(option: any) {
+    if (option === this.monaco.languages.typescript.ModuleKind.None) {
+      return undefined;
+    }
+    return this.monaco.languages.typescript.ModuleKind[option];
+  }
+
+  getModuleResolutionText(option: any) {
+    const kind = this.monaco.languages.typescript.ModuleResolutionKind[option]
+    return kind === 'NodeJs' ? 'node' : 'classic'
+  }
 }

@@ -1,12 +1,11 @@
 import { Sandbox } from "@/lib/sandbox";
-import { UI } from "./createUI";
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions;
 
 export const createExporter = (
   sandbox: Sandbox,
   monaco: typeof import("monaco-editor"),
-  ui: UI
+  // ui: UI
 ) => {
   function getScriptTargetText(option: any) {
     return monaco.languages.typescript.ScriptTarget[option];
@@ -131,7 +130,7 @@ export const createExporter = (
 
   const typescriptVersion = sandbox.ts.version;
   // prettier-ignore
-  const stringifiedCompilerOptions = JSON.stringify({ compilerOptions: getValidCompilerOptions(sandbox.getCompilerOptions()) }, null, '  ')
+  const stringifiedCompilerOptions = JSON.stringify({ compilerOptions: getValidCompilerOptions(sandbox.compilerOptions) }, null, '  ')
 
   // TODO: pull deps
   function openProjectInStackBlitz() {
@@ -278,27 +277,27 @@ ${codify(stringifiedCompilerOptions, "json")}
           encodeURIComponent(body)
       );
     } else {
-      ui.showModal(
-        body,
-        "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
-        {
-          "Create New Issue":
-            "https://github.com/Microsoft/TypeScript/issues/new"
-        }
-      );
+      // ui.showModal(
+      //   body,
+      //   "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
+      //   {
+      //     "Create New Issue":
+      //       "https://github.com/Microsoft/TypeScript/issues/new"
+      //   }
+      // );
     }
   }
 
   async function copyAsMarkdownIssue() {
     const markdown = await makeMarkdown();
-    ui.showModal(markdown, "Markdown code");
+    // ui.showModal(markdown, "Markdown code");
   }
 
   function copyForChat() {
     const query = sandbox.getURLQueryWithCompilerOptions(sandbox);
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`;
     const chat = `[Playground Link](${fullURL})`;
-    ui.showModal(chat, "Markdown for chat");
+    // ui.showModal(chat, "Markdown for chat");
   }
 
   function copyForChatWithPreview() {
@@ -311,7 +310,7 @@ ${codify(stringifiedCompilerOptions, "json")}
 
     const code = "```\n" + preview + "\n```\n";
     const chat = `${code}\n[Playground Link](${fullURL})`;
-    ui.showModal(chat, "Markdown code");
+    // ui.showModal(chat, "Markdown code");
   }
 
   return {

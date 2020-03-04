@@ -1,4 +1,5 @@
 import { PlaygroundConfig, Monaco, CompilerOptions } from "./types";
+import { Sandbox } from './sandbox'
 
 /**
  * These are the defaults, but they also act as the list of all compiler options
@@ -84,26 +85,25 @@ export const getCompilerOptionsFromParams = (
 
 /** Gets a query string representation (hash + queries) */
 export const getURLQueryWithCompilerOptions = (
-  sandbox: any,
+  sandbox: Sandbox,
   paramOverrides?: any
 ): string => {
   const compilerOptions = sandbox.compilerOptions;
-  const compilerDefaults = sandbox.compilerDefaults;
+  const compilerDefaults = sandbox.getCompilerDefaults();
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
     if (value !== compilerDefaults[key]) {
-      // @ts-ignore
       acc[key] = compilerOptions[key];
     }
 
     return acc;
-  }, {});
+  }, {} as Partial<CompilerOptions>);
 
   // The text of the TS/JS as the hash
   const hash = `code/${sandbox.lzstring.compressToEncodedURIComponent(
     sandbox.getText()
   )}`;
 
-  let urlParams: any = Object.assign({}, diff);
+  let urlParams = { ...diff };
   for (const param of ["lib", "ts"]) {
     const params = new URLSearchParams(location.search);
     if (params.has(param)) {

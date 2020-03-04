@@ -19,8 +19,8 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   container.id = "boolean-options-container";
   configContainer.appendChild(container);
 
-  const compilerOpts = sandbox.getCompilerOptions();
-  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(
+  const compilerOpts = sandbox.compilerOptions;
+  const boolOptions = Object.keys(sandbox.compilerOptions).filter(
     k => typeof compilerOpts[k] === "boolean"
   );
 
@@ -37,40 +37,43 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
     categoryMap[summary.categoryID][optID] = summary;
   });
 
-  Object.keys(categoryMap).forEach(categoryID => {
-    const categoryDiv = document.createElement("div");
-    const header = document.createElement("h4");
-    const ol = document.createElement("ol");
+  // console.log('L40')
+  // console.log(categoryMap)
 
-    Object.keys(categoryMap[categoryID]).forEach(optID => {
-      const optSummary = categoryMap[categoryID][optID];
-      header.textContent = optSummary.categoryDisplay;
+  // Object.keys(categoryMap).forEach(categoryID => {
+  //   const categoryDiv = document.createElement("div");
+  //   const header = document.createElement("h4");
+  //   const ol = document.createElement("ol");
 
-      const li = document.createElement("li");
-      const label = document.createElement("label");
-      label.innerHTML = `<span>${optSummary.id}</span><br/>${optSummary.oneliner}`;
+  //   Object.keys(categoryMap[categoryID]).forEach(optID => {
+  //     const optSummary = categoryMap[categoryID][optID];
+  //     header.textContent = optSummary.categoryDisplay;
 
-      const input = document.createElement("input");
-      input.value = optSummary.id;
-      input.type = "checkbox";
-      input.name = optSummary.id;
-      input.id = "option-" + optSummary.id;
+  //     const li = document.createElement("li");
+  //     const label = document.createElement("label");
+  //     label.innerHTML = `<span>${optSummary.id}</span><br/>${optSummary.oneliner}`;
 
-      input.onchange = () => {
-        sandbox.updateCompilerSetting(optSummary.id, input.checked);
-      };
+  //     const input = document.createElement("input");
+  //     input.value = optSummary.id;
+  //     input.type = "checkbox";
+  //     input.name = optSummary.id;
+  //     input.id = "option-" + optSummary.id;
 
-      label.htmlFor = input.id;
+  //     input.onchange = () => {
+  //       sandbox.updateCompilerSetting(optSummary.id, input.checked);
+  //     };
 
-      li.appendChild(input);
-      li.appendChild(label);
-      ol.appendChild(li);
-    });
+  //     label.htmlFor = input.id;
 
-    categoryDiv.appendChild(header);
-    categoryDiv.appendChild(ol);
-    container.appendChild(categoryDiv);
-  });
+  //     li.appendChild(input);
+  //     li.appendChild(label);
+  //     ol.appendChild(li);
+  //   });
+
+  //   categoryDiv.appendChild(header);
+  //   categoryDiv.appendChild(ol);
+  //   container.appendChild(categoryDiv);
+  // });
 
   const dropdownContainer = document.getElementById("compiler-dropdowns")!;
 
@@ -109,8 +112,8 @@ export const updateConfigDropdownForCompilerOptions = (
   sandbox: Sandbox,
   monaco: Monaco
 ) => {
-  const compilerOpts = sandbox.getCompilerOptions();
-  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(
+  const compilerOpts = sandbox.compilerOptions;
+  const boolOptions = Object.keys(sandbox.compilerOptions).filter(
     k => typeof compilerOpts[k] === "boolean"
   );
 

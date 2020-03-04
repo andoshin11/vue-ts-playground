@@ -114,18 +114,8 @@ export const updateTSVersion = (
   router: VueRouter,
   version: string
 ) => {
-  const url = getURLQueryWithCompilerOptions(sandbox, router.currentRoute, {
+  const rawURL = getRawURLQueryWithCompilerOptions(sandbox, router.currentRoute, {
     ts: version
-  });
-  router.replace(url);
-
-  console.log(router.currentRoute);
-
-  const updatedOptions = getCompilerOptionsFromParams(
-    sandbox.compilerOptions,
-    router.currentRoute
-  );
-  console.log(updatedOptions);
-  sandbox.updateCompilerSettings(updatedOptions);
-  console.log(sandbox.compilerOptions);
+  })
+  window.location.assign(rawURL)
 };

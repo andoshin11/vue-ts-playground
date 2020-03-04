@@ -62,29 +62,29 @@ export const sidebarHidden = () =>
 
 export const createSidebar = () => {
   const sidebar = document.createElement("div");
-  sidebar.className = "playground-sidebar";
+  // sidebar.className = "playground-sidebar";
 
   // This is independent of the sizing below so that you keep the same sized sidebar
   if (sidebarHidden()) {
     sidebar.style.display = "none";
   }
 
-  if (window.localStorage && window.localStorage.getItem("dragbar-x")) {
-    // Don't restore the x pos if the window isn't the same size
-    if (
-      window.innerWidth ===
-      Number(window.localStorage.getItem("dragbar-window-width"))
-    ) {
-      // Set the dragger to the previous x pos
-      const width = window.localStorage.getItem("dragbar-x");
-      sidebar.style.width = `${width}px`;
-      sidebar.style.flexBasis = `${width}px`;
-      sidebar.style.maxWidth = `${width}px`;
+  // if (window.localStorage && window.localStorage.getItem("dragbar-x")) {
+  //   // Don't restore the x pos if the window isn't the same size
+  //   if (
+  //     window.innerWidth ===
+  //     Number(window.localStorage.getItem("dragbar-window-width"))
+  //   ) {
+  //     // Set the dragger to the previous x pos
+  //     const width = window.localStorage.getItem("dragbar-x");
+  //     sidebar.style.width = `${width}px`;
+  //     sidebar.style.flexBasis = `${width}px`;
+  //     sidebar.style.maxWidth = `${width}px`;
 
-      const left = document.getElementById("editor-container")!;
-      left.style.width = `calc(100% - ${width}px)`;
-    }
-  }
+  //     const left = document.getElementById("editor-container")!;
+  //     left.style.width = `calc(100% - ${width}px)`;
+  //   }
+  // }
 
   return sidebar;
 };
