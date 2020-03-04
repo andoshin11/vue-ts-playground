@@ -1,5 +1,26 @@
 # client
 
+## TODO:
+- [ ] Register components on Plugin factory
+- [ ] Create Dragbar
+  - [x] UI
+  - [ ] Restore position
+- [ ] Save history on debounce
+- [ ] Update on compiler settings change hook
+- [ ] Update TS versions
+  - [x] UI
+  - [ ] Update URL
+- [ ] Example Modal
+- [x] Run and show results on Logs plugin
+- [ ] Toggle Sidebar
+- [ ] Get Example code
+  - [ ] Register Link Provider
+- [ ] Select Languages
+- [ ] Exporter
+- [ ] Main UI
+- [ ] Dev mode plugin
+- [ ] Restore Theme
+
 ## Project setup
 ```
 yarn install
