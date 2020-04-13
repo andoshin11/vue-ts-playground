@@ -31,7 +31,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { RootState } from '@/store'
-import { Exporter } from '@/playground/exporter'
+import { Exporter } from '../../exporter'
 
 export default Vue.extend({
   computed: {
