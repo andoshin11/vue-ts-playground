@@ -25,7 +25,7 @@ function importScript(src: string) {
 }
 
 async function main() {
-  await importScript("https://www.typescriptlang.org/v2/js/vs.loader.js");
+  await importScript("/js/vs.loader.js");
   const re = window.require as any
 
   // Check available version:
