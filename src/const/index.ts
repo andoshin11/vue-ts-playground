@@ -1,6 +1,8 @@
 // available versions:
 // https://typescript.azureedge.net/indexes/releases.json
 export const MONACO_TS_VERSIONS = [
+  "3.8.3",
+  "3.8.2",
   "3.7.5",
   "3.6.3",
   "3.5.1",
