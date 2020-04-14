@@ -1,8 +1,10 @@
 <template>
   <div class="showLogs">
-    <div>
-      <v-btn @click="runWithCustomLogs" class="action">Run Program</v-btn>
-      <v-btn @click="output = []" class="action">Reset</v-btn>
+    <div class="actions">
+      <button @click="runWithCustomLogs" class="action run">Run Program</button>
+      <div @click="output = []" role="button" class="reset" title="Reset Code">
+        <ResetIcon :width="24" :height="24" />
+      </div>
     </div>
     <ul class="logs">
       <li v-for="(log, i) in output" :key="i" class="log">
@@ -19,6 +21,7 @@
 import Vue from 'vue'
 import { Primitive } from '@/types/utils'
 import { RootState } from '@/store'
+import ResetIcon from '@/components/Base/Icon/Reset'
 
 interface IData {
   output: ({
@@ -29,6 +32,9 @@ interface IData {
 
 export default Vue.extend({
   name: 'showLogs',
+  components: {
+    ResetIcon
+  },
   data(): IData {
     return {
       output: []
@@ -124,8 +130,37 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.actions {
+  display: flex;
+  align-items: center;
+}
+
 .action {
   margin-right: 16px;
+}
+
+.run {
+  border-radius: 4px;
+  background: #007ACC;
+  box-shadow: 5px 5px 10px #bdbdc1, -5px -5px 10px #ffffff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 8px 16px;
+}
+
+.reset {
+  transition: ease .3s;
+  height: 24px;
+  width: 24px;
+}
+
+.reset:hover {
+  color: #007ACC;
+  transform: rotate(180deg);
+}
+
+.reset:active {
+  background: rgba(0,0,0,.5);
 }
 
 .logs {
@@ -144,7 +179,7 @@ export default Vue.extend({
 }
 
 .logType {
-  color: silver;
+  color: #007ACC;
 }
 
 .separator {
