@@ -26,6 +26,7 @@ export default Vue.extend({
 <style>
 body {
   margin: 0;
+  background-color: #F2F2F7;
 }
 
 #app {
