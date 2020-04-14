@@ -1,16 +1,8 @@
 <template>
-  <v-list>
-    <v-list-item ripple>
-      <v-list-item-title>
-        <span @click="setEditorTheme('sandbox')" >Light</span>
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item ripple>
-      <v-list-item-title>
-        <span @click="setEditorTheme('sandbox-dark')" >Dark</span>
-      </v-list-item-title>
-    </v-list-item>
-  </v-list>
+  <ul>
+    <li @click="setEditorTheme('sandbox')">Light</li>
+    <li @click="setEditorTheme('sandbox-dark')">Dark</li>
+  </ul>
 </template>
 
 <script lang="ts">
@@ -30,3 +22,25 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style scoped>
+ul {
+  list-style: none;
+  padding: 8px 0;
+  padding-left: 0 !important;
+}
+
+li {
+  cursor: pointer;
+  transition: ease .3s;
+  width: 100%;
+  display: block;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+li:hover {
+  background-color: #8fd0fe40;
+  color: #187abf;
+}
+</style>
