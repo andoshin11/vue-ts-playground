@@ -19,7 +19,9 @@ export default Vue.extend({
 
 <style scoped>
 .pre {
-  background-color: #f5f5f5;
+  border-radius: 8px;
+  background: #F2F2F7;
+  box-shadow: 28px 28px 36px #b6b6b9, -28px -28px 36px #ffffff;
   width: 100%;
   position: relative;
 }
@@ -30,9 +32,10 @@ export default Vue.extend({
   height: 100%;
   overflow-x: scroll;
   box-shadow: none;
+  background-color: transparent;
 }
 
 .code::before {
-  content: ''
+  content: '';
 }
 </style>
