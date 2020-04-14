@@ -146,13 +146,21 @@ export default Vue.extend({
 
 .diagnostic {
   list-style: none;
-  padding-left: 2rem;
+  padding-left: 1rem;
   margin: 0 0 1rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: .3s;
 }
 
 .diag-error {
   border-left: 2px solid red;
+}
+
+.diag-error:hover {
+  border-left: 2px solid transparent;
+  background-color: #fcb7b7;
 }
 </style>
 
