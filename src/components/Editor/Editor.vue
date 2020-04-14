@@ -1,11 +1,17 @@
 <template>
   <div id="Editor" class="Editor" :style="innerStyleObj">
     <EditorTabs />
+    <div class="EditorContainer">
+      <div id="EditorArea" class="EditorArea">
+        <div id="EditorEmbed" class="EditorEmbed"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import * as CSS from 'csstype'
 import { RootState } from "@/store";
 import {
   PlaygroundConfig,
@@ -19,11 +25,11 @@ export default Vue.extend({
   },
   props: {
     styleObj: {
-      type: Object
+      type: Object as () => CSS.Properties
     }
   },
   computed: {
-    innerStyleObj(): object {
+    innerStyleObj(): CSS.Properties {
       const defaultStyle = this.styleObj || {};
 
       return defaultStyle;
@@ -32,7 +38,6 @@ export default Vue.extend({
       return this.$store.state;
     }
   },
-  methods: {},
   async mounted() {
     // const sandbox = await this.createSandbox();
     // sandbox.editor.focus();
@@ -44,5 +49,25 @@ export default Vue.extend({
 .Editor {
   width: 50vw;
   height: calc(100vh - 48px);
+}
+
+.EditorContainer {
+  width: 100%;
+  height: 100%;
+  background-color: #F2F2F7;
+  padding: 2%;
+}
+
+.EditorArea {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: 2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
+}
+
+.EditorEmbed {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -17,7 +17,7 @@ export default Vue.extend({
   methods: {
     async createSandbox(): Promise<Sandbox> {
       const config: Partial<PlaygroundConfig> = {
-        domID: "Editor"
+        domID: "EditorEmbed"
       };
       return new Sandbox(window.main, config, window.ts);
     },
