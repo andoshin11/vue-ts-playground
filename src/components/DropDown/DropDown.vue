@@ -81,7 +81,7 @@ export default Vue.extend({
   width: auto;
   position: absolute;
   top: calc(100% + 8px);
-  right: 10%;
+  right: 0;
   border-radius: 4px;
   background: #F2F2F7;
   box-shadow:  5px 5px 10px #808083, 

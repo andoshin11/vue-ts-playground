@@ -9,7 +9,7 @@ export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData =
   base: "vs",
   inherit: true,
   rules: [
-    { token: "", foreground: "000000", background: "fffffe" },
+    { token: "", foreground: "000000", background: "F2F2F7" },
     { token: "invalid", foreground: "cd3131" },
     { token: "emphasis", fontStyle: "italic" },
     { token: "strong", fontStyle: "bold" },
@@ -55,12 +55,13 @@ export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData =
     { token: "keyword.json", foreground: "0451A5" }
   ],
   colors: {
-    editorBackground: "#F6F6F6",
+    editorBackground: "#F2F2F7",
     editorForeground: "#000000",
     editorInactiveSelection: "#E5EBF1",
     editorIndentGuides: "#D3D3D3",
     editorActiveIndentGuides: "#939393",
-    editorSelectionHighlight: "#ADD6FF4D"
+    editorSelectionHighlight: "#ADD6FF4D",
+    "editor.background": '#f2f2f700'
   }
 };
 

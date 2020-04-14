@@ -8,13 +8,14 @@
 
 <script lang="ts">
 import Vue from "vue";
+import * as CSS from 'csstype'
 import Editor from "@/components/Editor";
 import Dragbar from "@/components/Dragbar";
 import Sidebar from "@/components/Sidebar";
 
 interface IData {
-  editorStyle: object;
-  sidebarStyle: object;
+  editorStyle: CSS.Properties;
+  sidebarStyle: CSS.Properties;
   sidebarRef: Element | null;
   setRefInterval: number | null;
 }
@@ -38,7 +39,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    handleDrag(data: { editor: object; sidebar: object }) {
+    handleDrag(data: { editor: CSS.Properties; sidebar: CSS.Properties }) {
       const { editor, sidebar } = data;
 
       this.editorStyle = editor;

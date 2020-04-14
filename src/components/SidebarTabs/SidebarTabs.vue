@@ -74,7 +74,7 @@ export default Vue.extend({
   color: #187abf;
   background: #F2F2F7;
   border-right: solid 1px transparent;
-  box-shadow: inset 4px 4px 8px #bfbfc3, inset -4px -4px 8px #ffffff;
+  box-shadow: 2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
 }
 
 .tab:last-child.active,

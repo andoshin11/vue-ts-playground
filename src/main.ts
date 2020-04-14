@@ -40,7 +40,7 @@ async function main() {
     ignoreDuplicateModules: ['vs/editor/editor.main'],
   })
 
-  re(['vs/editor/editor.main', 'vs/language/typescript/tsWorker'], (main: any) => {
+  re(['vs/editor/editor.main', 'vs/language/typescript/tsWorker'], (main: typeof import('monaco-editor')) => {
     window.main = main
 
     new Vue({
