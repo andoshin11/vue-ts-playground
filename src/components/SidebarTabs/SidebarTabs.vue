@@ -41,26 +41,44 @@ export default Vue.extend({
   align-items: center;
   justify-content: center;
   height: 2.5rem;
-  margin-bottom: 10px;
+  margin: 16px 0;
 }
 
 .tab {
   font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
-  margin: 5px 8px;
-  padding-top: 0;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  background: none;
   color: inherit;
   border: none;
   cursor: pointer;
   outline: inherit;
-  border-bottom: 1px solid transparent;
   transition: .3s;
+  padding: 8px 24px;
+  border-radius: 0px;
+  background: #F2F2F7;
+  box-shadow:  8px 4px 8px #ceced2, 8px -4px 8px #ffffff;
+  border-right: solid 1px rgba(0,0,0,.1);
+}
+
+.tab:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.tab:last-child {
+  border-radius: 0 4px 4px 0;
+  border-right: none;
 }
 
 .tab.active,
 .tab:hover {
-  border-bottom: 1px solid #187abf;
+  color: #187abf;
+  background: #F2F2F7;
+  border-right: solid 1px transparent;
+  box-shadow: inset 4px 4px 8px #bfbfc3, inset -4px -4px 8px #ffffff;
+}
+
+.tab:last-child.active,
+.tab:last-child:hover {
+  border-right: none;
 }
 </style>

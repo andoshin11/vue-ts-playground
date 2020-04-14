@@ -46,6 +46,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.Sidebar {
+  background-color: #F2F2F7;
+}
+
 .hidden {
   display: none;
 }
