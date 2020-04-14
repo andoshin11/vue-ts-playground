@@ -1,9 +1,13 @@
 <template>
-  <div class="Dragbar" @mousedown="startDragging" @mouseup="endDragging"></div>
+  <div class="Dragbar" @mousedown="startDragging" @mouseup="endDragging">
+    <div class="divider"/>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { RootState } from '@/store'
+
 export default Vue.extend({
   props: {
     sidebarRef: {
@@ -46,6 +50,11 @@ export default Vue.extend({
         }
       });
 
+      const { sandbox } = this.$store.state as RootState
+      if (sandbox) {
+        sandbox.editor.layout()
+      }
+
       // Save the x coordinate of the
       if (window.localStorage) {
         window.localStorage.setItem("dragbar-x", "" + clampedOffset);
@@ -65,10 +74,17 @@ export default Vue.extend({
 
 <style scoped>
 .Dragbar {
-  padding: 3px;
   cursor: col-resize;
-  background-color: #fff;
+  background-color: #F2F2F7;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 100vh;
+}
+
+.divider {
+  width: 1px;
+  box-sizing: border-box;
   border-left: 1px solid #c4c4c4;
-  margin-left: 2px;
 }
 </style>
