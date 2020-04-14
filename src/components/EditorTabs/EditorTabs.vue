@@ -1,91 +1,46 @@
 <template>
   <div class="EditorTabs">
-    <v-list
-      dense
-      flat
-      class="EditorTabList"
-    >
-      <v-list-item class="toolBarItem" ripple>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <button class="tabAction" v-on="on">
-              v{{ tsVersion }}
-              <span class="carret" />
-            </button>
-          </template>
-          <v-list>
-            <v-list-item
-              v-for="version in allVersions"
-              :key="version"
-              ripple
-            >
-              <v-list-item-title><span @click="updateTSVersion(version)" >{{ version }}</span></v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-list-item>
-      <v-list-item ripple>
-        <v-menu offset-y :close-on-content-click="false">
-          <template v-slot:activator="{ on }">
-            <button class="tabAction" v-on="on">
-              Config
-              <span class="carret" />
-            </button>
-          </template>
-          <ConfigOptions/>
-        </v-menu>
-      </v-list-item>
-
-      <v-list-item ripple>
-        <v-menu offset-y :close-on-content-click="false">
-          <template v-slot:activator="{ on }">
-            <button class="tabAction" v-on="on">
-              Theme
-              <span class="carret" />
-            </button>
-          </template>
+    <ul class="tabs">
+      <li class="tab">
+        <DropDown text="Theme">
           <Theme />
-        </v-menu>
-      </v-list-item>
-
-      <v-list-item ripple>
-        <v-menu offset-y :close-on-content-click="false">
-          <template v-slot:activator="{ on }">
-            <button class="tabAction" v-on="on">
-              Export
-              <span class="carret" />
-            </button>
-          </template>
+        </DropDown>
+      </li>
+      <li class="tab">
+        <DropDown :text="'v' + tsVersion">
+          <TSVersions />
+        </DropDown>
+      </li>
+      <li class="tab">
+        <DropDown text="Config">
+          <ConfigOptions/>
+        </DropDown>
+      </li>
+      <li class="tab">
+        <DropDown text="Export">
           <Exporter />
-        </v-menu>
-      </v-list-item>
-    </v-list>
+        </DropDown>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { RootState } from "@/store";
-import { updateTSVersion } from '@/utils/router'
 import ConfigOptions from '@/components/ConfigOptions'
 import Theme from '@/components/Theme'
 import Exporter from '@/components/Exporter'
-import { MONACO_TS_VERSIONS } from '@/const'
-
-interface IData {
-  on: boolean
-}
+import TSVersions from '../TSVersions'
+import DropDown from '../DropDown'
 
 export default Vue.extend({
   components: {
     ConfigOptions,
     Theme,
-    Exporter
-  },
-  data(): IData {
-    return {
-      on: false
-    };
+    Exporter,
+    DropDown,
+    TSVersions
   },
   computed: {
     state(): RootState {
@@ -95,16 +50,6 @@ export default Vue.extend({
       const { sandbox } = this.state;
       return sandbox && sandbox.ts.version;
     },
-    allVersions(): string[] {
-      return MONACO_TS_VERSIONS
-    }
-  },
-  methods: {
-    updateTSVersion(version: string) {
-      const { sandbox } = this.state;
-      if (!sandbox) return;
-      updateTSVersion(sandbox, this.$router, version);
-    }
   }
 });
 </script>
@@ -113,39 +58,15 @@ export default Vue.extend({
 .EditorTabs {
   height: 48px;
   margin-right: -2px;
-  margin-bottom: .5rem;
+  background: #F2F2F7;
 }
 
-.EditorTabList {
+.tabs {
+  height: 100%;
+  padding-left: 0;
+  list-style: none;
   display: flex;
-  box-sizing: border-box;
-  border-bottom: 1px solid #c4c4c4;
-  padding: 0;
-  height: 100%;
-  border-radius: 0;
-}
-
-.toolBarItem {
-  text-align: center;
-}
-
-.carret {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 2px;
-  vertical-align: middle;
-  border-top: 4px solid;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-}
-
-.tabAction {
-  text-align: center;
-  width: calc(100% + 32px);
-  height: 100%;
-  outline: none;
-  margin: 0 -16px;
-  font-weight: bold;
+  justify-content: space-evenly;
+  align-items: center;
 }
 </style>
