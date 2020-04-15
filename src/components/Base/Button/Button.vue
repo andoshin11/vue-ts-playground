@@ -92,20 +92,38 @@ export default Vue.extend({
   position: relative;
   outline: none;
   border: none;
-  transition: all 0.4s cubic-bezier(.79,.21,.06,.81);
+  transition: all 0.3s cubic-bezier(.79,.21,.06,.81);
   cursor: pointer;
   padding: 8px;
-  background: #F2F2F7;
-  box-shadow: 5px 5px 10px #c2c2c6, -5px -5px 10px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
+  background: transparent;
+  box-shadow: 6px 6px 8px #c2c2c6, -5px -5px 10px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
+}
+
+.Button::after {
+  content: '';
+  position: absolute;
+  border-radius: 4px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: all .3s;
 }
 
 .Button:hover {
-  box-shadow: 5px 5px 10px #9d9da1, -5px -5px 10px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
+  box-shadow: 2px 2px 2px #9d9da1, -2px -2px 6px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
 }
 
 .Button:active,
 .Button:focus {
   outline: none;
-  box-shadow: 0 0 0 #c2c2c6, 0 0 0 #ffffff, 2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
+  background: linear-gradient(145deg, #ffffff, transparent);
+  box-shadow: 2px 2px 6px #9d9da1, 0 0 0 #ffffff, 2px 2px 2px 0px #cbcbcf inset, -2px -2px 6px 2px #ffffff inset;
 }
+
+.Button:active::after,
+.Button:focus::after {
+  box-shadow: 2px 2px 2px 0 #c2c2c6 inset, -2px -2px 2px 0 #ffffff;
+}
+
 </style>
