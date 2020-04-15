@@ -42,13 +42,18 @@ export default Vue.extend({
   },
   pluginHooks: {
     async modelChangedDebounce(sandbox, model, vm) {
-      console.log('[Plugin showErrors]: modelChangedDebounce')
-      const worker = await sandbox.getWorkerProcess();
-      const diagnostics = await worker.getSemanticDiagnostics(
-        model.uri.toString()
-      );
-      // @ts-ignore
-      vm.diagnostics = diagnostics;
+      try {
+        console.log('[Plugin showErrors]: modelChangedDebounce')
+        const worker = await sandbox.getWorkerProcess();
+        const diagnostics = await worker.getSemanticDiagnostics(
+          model.uri.toString()
+        );
+        // @ts-ignore
+        vm.diagnostics = diagnostics;
+      } catch (e) {
+        // @ts-ignore
+        vm.diagnostics = []
+      }
     }
   },
   methods: {

@@ -30,11 +30,16 @@ export default Vue.extend({
   },
   pluginHooks: {
     async modelChanged(sandbox, model, vm) {
-      console.log('[Plugin showDTS]: modelChanged')
-      const DTS = await sandbox.getDTSForCode()
-      const coloredJS = await sandbox.monaco.editor.colorize(DTS, 'typescript', {})
-      // @ts-ignore
-      vm.content = coloredJS
+      try {
+        console.log('[Plugin showDTS]: modelChanged')
+        const DTS = await sandbox.getDTSForCode()
+        const coloredJS = await sandbox.monaco.editor.colorize(DTS, 'typescript', {})
+        // @ts-ignore
+        vm.content = coloredJS
+      } catch (e) {
+        // @ts-ignore
+        vm.content = ''
+      }
     }
   }
 })

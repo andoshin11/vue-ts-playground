@@ -25,31 +25,36 @@ function importScript(src: string) {
 }
 
 async function main() {
-  await importScript("/js/vs.loader.js");
-  const re = window.require as any
+  try {
+    await importScript("/js/vs.loader.js");
+    const re = window.require as any
 
-  // Check available version:
-  // https://typescript.azureedge.net/indexes/releases.json
-  const tsVersoin = new URLSearchParams(location.search).get('ts') || getLatestMonacoTSVersion()
+    // Check available version:
+    // https://typescript.azureedge.net/indexes/releases.json
+    const tsVersoin = new URLSearchParams(location.search).get('ts') || getLatestMonacoTSVersion()
 
-  re.config({
-    paths: {
-      vs: `https://typescript.azureedge.net/cdn/${tsVersoin}/monaco/min/vs`
-    },
-    // We need this for monaco to work
-    ignoreDuplicateModules: ['vs/editor/editor.main'],
-  })
+    re.config({
+      paths: {
+        vs: `https://typescript.azureedge.net/cdn/${tsVersoin}/monaco/min/vs`
+      },
+      // We need this for monaco to work
+      ignoreDuplicateModules: ['vs/editor/editor.main'],
+    })
 
-  re(['vs/editor/editor.main', 'vs/language/typescript/tsWorker'], (main: typeof import('monaco-editor')) => {
-    window.main = main
+    re(['vs/editor/editor.main', 'vs/language/typescript/tsWorker'], (main: typeof import('monaco-editor')) => {
+      window.main = main
 
-    new Vue({
-      router,
-      store,
-      // vuetify,
-      render: h => h(App)
-    }).$mount("#app");
-  })
+      new Vue({
+        router,
+        store,
+        // vuetify,
+        render: h => h(App)
+      }).$mount("#app");
+    })
+  } catch (e) {
+    console.log('something went wrong')
+    console.log(e)
+  }
 }
 
 main();

@@ -1,12 +1,13 @@
 <template>
   <CodePreview v-if="content" :content="content" />
-  <Loading v-else />
+  <div v-else>
+    No output.
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import CodePreview from '@/components/CodePreview'
-import Loading from '@/components/Loading'
 
 interface IData {
   content: string | null
@@ -15,8 +16,7 @@ interface IData {
 export default Vue.extend({
   name: 'showJS',
   components: {
-    CodePreview,
-    Loading
+    CodePreview
   },
   data(): IData {
     return {
@@ -25,11 +25,16 @@ export default Vue.extend({
   },
   pluginHooks: {
     async modelChangedDebounce(sandbox, _, vm) {
-      const runnableJS = await sandbox.getRunnableJS()
-      const coloredJS = await sandbox.monaco.editor.colorize(runnableJS, 'javascript', {})
+      try {
+        const runnableJS = await sandbox.getRunnableJS()
+        const coloredJS = await sandbox.monaco.editor.colorize(runnableJS, 'javascript', {})
 
-      // @ts-ignore
-      vm.content = coloredJS
+        // @ts-ignore
+        vm.content = coloredJS
+      } catch (e) {
+        // @ts-ignore
+        vm.content = ''
+      }
     }
   }
 })
