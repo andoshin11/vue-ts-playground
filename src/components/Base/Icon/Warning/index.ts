@@ -1,3 +1,3 @@
-import Warning from './Warning.vue'
+import Warning from "./Warning.vue";
 
-export default Warning
+export default Warning;

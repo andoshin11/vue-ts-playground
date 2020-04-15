@@ -1,7 +1,7 @@
-import { Route } from 'vue-router'
-import lzstring from '@/lib/sandbox/vendor/lzstring.min'
-import { Sandbox, CompilerOptions } from '@/lib/sandbox'
-import { getRawURLQueryWithCompilerOptions } from '@/utils/router'
+import { Route } from "vue-router";
+import lzstring from "@/lib/sandbox/vendor/lzstring.min";
+import { Sandbox, CompilerOptions } from "@/lib/sandbox";
+import { getRawURLQueryWithCompilerOptions } from "@/utils/router";
 
 // These are the compiler's defaults, and we want a diff from
 // these before putting it in the issue
@@ -21,17 +21,18 @@ const defaultCompilerOptionsForTSC: CompilerOptions = {
   emitDecoratorMetadata: false
 };
 
-type ValidCompilerOptions = Omit<CompilerOptions, 'target' | 'jsx' | 'module' | 'moduleResolution'> & {
+type ValidCompilerOptions = Omit<
+  CompilerOptions,
+  "target" | "jsx" | "module" | "moduleResolution"
+> & {
   target?: string;
   jsx?: string;
   module?: string;
   moduleResolution?: string;
-}
+};
 
 export class Exporter {
-  constructor(
-    private readonly sandbox: Sandbox
-  ) {}
+  constructor(private readonly sandbox: Sandbox) {}
 
   getValidCompilerOptions(options: CompilerOptions): ValidCompilerOptions {
     const {
@@ -42,10 +43,12 @@ export class Exporter {
       ...restOptions
     } = options;
 
-    const targetText = this.sandbox.getScriptTargetText(targetOption)
-    const jsxText = this.sandbox.getJsxEmitText(jsxOption)
+    const targetText = this.sandbox.getScriptTargetText(targetOption);
+    const jsxText = this.sandbox.getJsxEmitText(jsxOption);
     const moduleText = this.sandbox.getModuleKindText(moduleOption);
-    const moduleResolutionText = this.sandbox.getModuleResolutionText(moduleResolutionOption)
+    const moduleResolutionText = this.sandbox.getModuleResolutionText(
+      moduleResolutionOption
+    );
 
     const opts: ValidCompilerOptions = {
       ...restOptions,
@@ -70,13 +73,21 @@ export class Exporter {
   }
 
   stringifiedCompilerOptions() {
-    return JSON.stringify({ compilerOptions: this.getValidCompilerOptions(this.sandbox.compilerOptions) }, null, '  ')
+    return JSON.stringify(
+      {
+        compilerOptions: this.getValidCompilerOptions(
+          this.sandbox.compilerOptions
+        )
+      },
+      null,
+      "  "
+    );
   }
 
   openInASTViewer() {
-    const text = this.sandbox.getText()
-    const hash = `#code/${lzstring.compressToEncodedURIComponent(text)}`
-    window.open(`https://ts-ast-viewer.com/${hash}`, '_blank')
+    const text = this.sandbox.getText();
+    const hash = `#code/${lzstring.compressToEncodedURIComponent(text)}`;
+    window.open(`https://ts-ast-viewer.com/${hash}`, "_blank");
   }
 
   openInCodeSandbox() {
@@ -105,9 +116,9 @@ export class Exporter {
       .replace(/\+/g, "-") // Convert '+' to '-'
       .replace(/\//g, "_") // Convert '/' to '_'
       .replace(/=+$/, ""); // Remove ending '='
-    
+
     const url = `https://codesandbox.io/api/v1/sandboxes/define?view=editor&parameters=${parameters}`;
-    window.open(url, '_blank')
+    window.open(url, "_blank");
   }
 
   async makeMarkdown(route: Route) {
@@ -115,7 +126,7 @@ export class Exporter {
       return "```" + ext + "\n" + code + "\n```\n";
     }
 
-    const fullURL = getRawURLQueryWithCompilerOptions(this.sandbox, route)
+    const fullURL = getRawURLQueryWithCompilerOptions(this.sandbox, route);
     const jsSection = this.sandbox.config.useJavaScript
       ? ""
       : `
@@ -173,7 +184,7 @@ ${codify(this.stringifiedCompilerOptions(), "json")}
           encodeURIComponent(body)
       );
     } else {
-      return body
+      return body;
     }
   }
 }

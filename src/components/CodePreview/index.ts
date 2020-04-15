@@ -1,3 +1,3 @@
-import CodePreview from './CodePreview.vue'
+import CodePreview from "./CodePreview.vue";
 
-export default CodePreview
+export default CodePreview;

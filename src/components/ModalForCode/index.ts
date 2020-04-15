@@ -1,3 +1,3 @@
-import ModalForCode from './ModalForCode.vue'
+import ModalForCode from "./ModalForCode.vue";
 
-export default ModalForCode
+export default ModalForCode;

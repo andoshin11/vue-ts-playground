@@ -1,3 +1,3 @@
-import Reset from './Reset.vue'
+import Reset from "./Reset.vue";
 
-export default Reset
+export default Reset;

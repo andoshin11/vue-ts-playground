@@ -1,4 +1,4 @@
-import { CompilerHost } from 'typescript'
+import { CompilerHost } from "typescript";
 
 // A single file version from
 // https://stackoverflow.com/questions/53733138/how-do-i-type-check-a-snippet-of-typescript-code-in-memory

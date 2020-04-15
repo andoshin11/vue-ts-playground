@@ -1,5 +1,5 @@
 import { PlaygroundConfig, Monaco, CompilerOptions } from "./types";
-import { Sandbox } from './sandbox'
+import { Sandbox } from "./sandbox";
 
 /**
  * These are the defaults, but they also act as the list of all compiler options
@@ -48,7 +48,7 @@ export function getDefaultSandboxCompilerOptions(
     target: monaco.languages.typescript.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.React,
     module: monaco.languages.typescript.ModuleKind.ESNext
-  }
+  };
 }
 
 /**
@@ -59,24 +59,21 @@ export const getCompilerOptionsFromParams = (
   options: CompilerOptions,
   params: URLSearchParams
 ): CompilerOptions => {
-  const urlDefaults = Object.keys(options).reduce(
-    (acc: any, key) => {
-      if (params.has(key)) {
-        const urlValue = params.get(key)!;
+  const urlDefaults = Object.keys(options).reduce((acc: any, key) => {
+    if (params.has(key)) {
+      const urlValue = params.get(key)!;
 
-        if (urlValue === "true") {
-          acc[key] = true;
-        } else if (urlValue === "false") {
-          acc[key] = false;
-        } else if (!isNaN(parseInt(urlValue, 10))) {
-          acc[key] = parseInt(urlValue, 10);
-        }
+      if (urlValue === "true") {
+        acc[key] = true;
+      } else if (urlValue === "false") {
+        acc[key] = false;
+      } else if (!isNaN(parseInt(urlValue, 10))) {
+        acc[key] = parseInt(urlValue, 10);
       }
+    }
 
-      return acc;
-    },
-    {}
-  );
+    return acc;
+  }, {});
 
   return urlDefaults;
 };

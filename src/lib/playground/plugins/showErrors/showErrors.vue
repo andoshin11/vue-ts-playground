@@ -23,8 +23,8 @@ import { RootState } from "@/store";
 
 interface IData {
   diagnostics: Diagnostic[];
-  decorationLock: boolean
-  decorations: string[]
+  decorationLock: boolean;
+  decorations: string[];
 }
 
 export default Vue.extend({
@@ -43,7 +43,7 @@ export default Vue.extend({
   pluginHooks: {
     async modelChangedDebounce(sandbox, model, vm) {
       try {
-        console.log('[Plugin showErrors]: modelChangedDebounce')
+        console.log("[Plugin showErrors]: modelChangedDebounce");
         const worker = await sandbox.getWorkerProcess();
         const diagnostics = await worker.getSemanticDiagnostics(
           model.uri.toString()
@@ -52,7 +52,7 @@ export default Vue.extend({
         vm.diagnostics = diagnostics;
       } catch (e) {
         // @ts-ignore
-        vm.diagnostics = []
+        vm.diagnostics = [];
       }
     }
   },
@@ -81,14 +81,15 @@ export default Vue.extend({
       );
     },
     decorateError(diagnostic: Diagnostic, wholeLine: boolean = false) {
-      if (!diagnostic.start || !diagnostic.length || this.decorationLock) return
+      if (!diagnostic.start || !diagnostic.length || this.decorationLock)
+        return;
       const { sandbox } = this.state;
       if (!sandbox) return;
-      const model = sandbox.getModel()
+      const model = sandbox.getModel();
 
-      const start = model.getPositionAt(diagnostic.start)
-      if (wholeLine) sandbox.editor.revealLine(start.lineNumber)
-      const end = model.getPositionAt(diagnostic.start + diagnostic.length)
+      const start = model.getPositionAt(diagnostic.start);
+      if (wholeLine) sandbox.editor.revealLine(start.lineNumber);
+      const end = model.getPositionAt(diagnostic.start + diagnostic.length);
       this.decorations = sandbox.editor.deltaDecorations(this.decorations, [
         {
           range: new sandbox.monaco.Range(
@@ -102,22 +103,22 @@ export default Vue.extend({
             isWholeLine: wholeLine
           }
         }
-      ])
+      ]);
     },
     removeErrorDecoration() {
       const { sandbox } = this.state;
       if (!sandbox || this.decorationLock) return;
-      sandbox.editor.deltaDecorations(this.decorations, [])
+      sandbox.editor.deltaDecorations(this.decorations, []);
     },
     decorateLine(diagnostic: Diagnostic) {
-      if (!diagnostic.start || !diagnostic.length) return
+      if (!diagnostic.start || !diagnostic.length) return;
       const { sandbox } = this.state;
       if (!sandbox) return;
-      const model = sandbox.getModel()
+      const model = sandbox.getModel();
 
-      const start = model.getPositionAt(diagnostic.start)
-      sandbox.editor.revealLine(start.lineNumber)
-      const end = model.getPositionAt(diagnostic.start + diagnostic.length)
+      const start = model.getPositionAt(diagnostic.start);
+      sandbox.editor.revealLine(start.lineNumber);
+      const end = model.getPositionAt(diagnostic.start + diagnostic.length);
       this.decorations = sandbox.editor.deltaDecorations(this.decorations, [
         {
           range: new sandbox.monaco.Range(
@@ -131,13 +132,13 @@ export default Vue.extend({
             isWholeLine: true
           }
         }
-      ])
-      this.decorationLock = true
-      const vm = this
+      ]);
+      this.decorationLock = true;
+      const vm = this;
       setTimeout(() => {
-        vm.decorationLock = false
-        sandbox.editor.deltaDecorations(vm.decorations, [])
-      }, 300)
+        vm.decorationLock = false;
+        sandbox.editor.deltaDecorations(vm.decorations, []);
+      }, 300);
     }
   }
 });
@@ -162,7 +163,7 @@ export default Vue.extend({
   cursor: pointer;
   display: flex;
   align-items: center;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .diag-error {

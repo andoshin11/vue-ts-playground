@@ -1,12 +1,12 @@
 <template>
   <div class="Dragbar" @mousedown="startDragging" @mouseup="endDragging">
-    <div class="divider"/>
+    <div class="divider" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { RootState } from '@/store'
+import { RootState } from "@/store";
 
 export default Vue.extend({
   props: {
@@ -50,9 +50,9 @@ export default Vue.extend({
         }
       });
 
-      const { sandbox } = this.$store.state as RootState
+      const { sandbox } = this.$store.state as RootState;
       if (sandbox) {
-        sandbox.editor.layout()
+        sandbox.editor.layout();
       }
 
       // Save the x coordinate of the
@@ -75,7 +75,7 @@ export default Vue.extend({
 <style scoped>
 .Dragbar {
   cursor: col-resize;
-  background-color: #F2F2F7;
+  background-color: #f2f2f7;
   display: flex;
   justify-content: center;
   width: 10px;

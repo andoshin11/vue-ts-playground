@@ -2,8 +2,8 @@ export type Monaco = typeof import("monaco-editor");
 
 export type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions;
 
-export type EditorType = ReturnType<Monaco['editor']['create']>
-export type ModelType = NonNullable<ReturnType<Monaco['editor']['getModel']>>
+export type EditorType = ReturnType<Monaco["editor"]["create"]>;
+export type ModelType = NonNullable<ReturnType<Monaco["editor"]["getModel"]>>;
 
 /**
  * These are settings for the playground which are the equivalent to props in React

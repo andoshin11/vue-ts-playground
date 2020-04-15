@@ -52,13 +52,14 @@ export default Vue.extend({
   border: none;
   cursor: pointer;
   outline: inherit;
-  transition: .3s;
+  transition: 0.3s;
   padding: 8px 24px;
-  transition: all 0.3s cubic-bezier(.79,.21,.06,.81);
+  transition: all 0.3s cubic-bezier(0.79, 0.21, 0.06, 0.81);
   border-radius: 0px;
-  background: #F2F2F7;
-  box-shadow: 8px 4px 8px #ceced2, 8px -4px 8px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
-  border-right: solid 1px rgba(0,0,0,.1);
+  background: #f2f2f7;
+  box-shadow: 8px 4px 8px #ceced2, 8px -4px 8px #ffffff,
+    0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
+  border-right: solid 1px rgba(0, 0, 0, 0.1);
 }
 
 .tab:first-child {
@@ -72,17 +73,18 @@ export default Vue.extend({
 
 .tab:hover {
   border-right: solid 1px #ceced2;
-  box-shadow: 2px 2px 1px #9d9da1, -2px -2px 6px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
-
+  box-shadow: 2px 2px 1px #9d9da1, -2px -2px 6px #ffffff,
+    0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
 }
 
 .tab.active,
 .tab:active,
 .tab:focus {
   color: #187abf;
-  background: #F2F2F7;
+  background: #f2f2f7;
   border-right: solid 1px transparent;
-  box-shadow: 2px 1px 1px #9d9da1, 0 0 0 transparent, 2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
+  box-shadow: 2px 1px 1px #9d9da1, 0 0 0 transparent,
+    2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
 }
 
 .tab:last-child.active,

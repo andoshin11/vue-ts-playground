@@ -1,5 +1,5 @@
-import { Sandbox } from './sandbox'
-import { CompilerOptions } from './types'
+import { Sandbox } from "./sandbox";
+import { CompilerOptions } from "./types";
 
 const booleanConfigRegexp = /^\/\/\s?@(\w+)$/;
 

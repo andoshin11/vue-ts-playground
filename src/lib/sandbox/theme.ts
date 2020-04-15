@@ -61,7 +61,7 @@ export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData =
     editorIndentGuides: "#D3D3D3",
     editorActiveIndentGuides: "#939393",
     editorSelectionHighlight: "#ADD6FF4D",
-    "editor.background": '#f2f2f700'
+    "editor.background": "#f2f2f700"
   }
 };
 

@@ -11,12 +11,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import * as CSS from 'csstype'
+import * as CSS from "csstype";
 import { RootState } from "@/store";
-import {
-  PlaygroundConfig,
-  Sandbox
-} from "@/lib/sandbox";
+import { PlaygroundConfig, Sandbox } from "@/lib/sandbox";
 import EditorTabs from "@/components/EditorTabs";
 
 export default Vue.extend({
@@ -67,7 +64,7 @@ export default Vue.extend({
 
 .EditorContainer {
   width: 100%;
-  background-color: #F2F2F7;
+  background-color: #f2f2f7;
   padding: 2%;
 }
 

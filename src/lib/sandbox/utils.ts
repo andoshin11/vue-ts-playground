@@ -1,4 +1,4 @@
-import { PlaygroundConfig, CompilerOptions, Monaco } from './types'
+import { PlaygroundConfig, CompilerOptions, Monaco } from "./types";
 
 export const languageType = (config: PlaygroundConfig) =>
   config.useJavaScript ? "javascript" : "typescript";

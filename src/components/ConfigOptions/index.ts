@@ -1,3 +1,3 @@
-import ConfigOptions from './ConfigOptions.vue'
+import ConfigOptions from "./ConfigOptions.vue";
 
-export default ConfigOptions
+export default ConfigOptions;

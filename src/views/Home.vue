@@ -3,8 +3,18 @@
     <div class="editor" :style="editorStyle">
       <Editor />
     </div>
-    <Dragbar class="dragbar" v-if="sidebarRef" :sidebarRef="sidebarRef" @drag="handleDrag" />
-    <div id="home_sidebar" class="sidebar" :class="{ open: isSidebarOpen }" :style="sidebarStyle">
+    <Dragbar
+      class="dragbar"
+      v-if="sidebarRef"
+      :sidebarRef="sidebarRef"
+      @drag="handleDrag"
+    />
+    <div
+      id="home_sidebar"
+      class="sidebar"
+      :class="{ open: isSidebarOpen }"
+      :style="sidebarStyle"
+    >
       <Sidebar @clickHead="handleSidebarClick" />
     </div>
   </div>
@@ -12,7 +22,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import * as CSS from 'csstype'
+import * as CSS from "csstype";
 import Editor from "@/components/Editor";
 import Dragbar from "@/components/Dragbar";
 import Sidebar from "@/components/Sidebar";
@@ -22,7 +32,7 @@ interface IData {
   sidebarStyle: CSS.Properties;
   sidebarRef: Element | null;
   setRefInterval: number | null;
-  isSidebarOpen: boolean
+  isSidebarOpen: boolean;
 }
 
 export default Vue.extend({
@@ -52,7 +62,7 @@ export default Vue.extend({
       this.sidebarStyle = sidebar;
     },
     handleSidebarClick() {
-      this.isSidebarOpen = !this.isSidebarOpen
+      this.isSidebarOpen = !this.isSidebarOpen;
     }
   },
   async mounted() {
@@ -109,14 +119,14 @@ export default Vue.extend({
 
 @media screen and (max-width: 768px) {
   .sidebar {
-    background-color: #F2F2F7;
+    background-color: #f2f2f7;
     position: fixed;
     height: calc(100% - 64px);
     width: 100vw;
     top: calc(100% - 56px);
-    box-shadow:0px 3px 6px 4px #9d9da1;
-    border-radius:16px 16px 0px 0px;
-    transition: ease .3s;
+    box-shadow: 0px 3px 6px 4px #9d9da1;
+    border-radius: 16px 16px 0px 0px;
+    transition: ease 0.3s;
     padding-bottom: 8px;
   }
 }

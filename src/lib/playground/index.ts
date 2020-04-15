@@ -1,15 +1,15 @@
-import Vue, { VueConstructor } from 'vue'
+import Vue, { VueConstructor } from "vue";
 import { Sandbox } from "@/lib/sandbox";
-import PluginWrapper from '@/mixins/PluginWrapper'
+import PluginWrapper from "@/mixins/PluginWrapper";
 type Monaco = typeof import("monaco-editor");
 
 declare const window: any;
 
-import { showJSPlugin } from '@/lib/playground/plugins/showJS'
-import { showDTSPlugin } from '@/lib/playground/plugins/showDTS'
-import { showErrorsPlugin } from '@/lib/playground/plugins/showErrors'
-import { showTypesPlugin } from '@/lib/playground/plugins/showTypes'
-import { showLogsPlugin } from '@/lib/playground/plugins/showLogs'
+import { showJSPlugin } from "@/lib/playground/plugins/showJS";
+import { showDTSPlugin } from "@/lib/playground/plugins/showDTS";
+import { showErrorsPlugin } from "@/lib/playground/plugins/showErrors";
+import { showTypesPlugin } from "@/lib/playground/plugins/showTypes";
+import { showLogsPlugin } from "@/lib/playground/plugins/showLogs";
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -37,7 +37,7 @@ export interface PlaygroundPlugin {
   willUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void;
   /** After we remove the tab */
   didUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void;
-  component?: VueConstructor
+  component?: VueConstructor;
 }
 
 interface PlaygroundConfig {
@@ -45,7 +45,7 @@ interface PlaygroundConfig {
   prefix: string;
 }
 
-export const pluginNameFromID = (id: string) => `Plugin-ID-${id}`
+export const pluginNameFromID = (id: string) => `Plugin-ID-${id}`;
 
 export const defaultPlugins: PlaygroundPlugin[] = [
   showJSPlugin,
@@ -53,34 +53,40 @@ export const defaultPlugins: PlaygroundPlugin[] = [
   showErrorsPlugin,
   showLogsPlugin
   // showTypesPlugin
-]
+];
 
-export const pluginFactories = (v: VueConstructor) => (plugins: PlaygroundPlugin[]) => {
+export const pluginFactories = (v: VueConstructor) => (
+  plugins: PlaygroundPlugin[]
+) => {
   plugins.forEach(p => {
-    const pluginName = pluginNameFromID(p.id)
+    const pluginName = pluginNameFromID(p.id);
     // Register components
     if (p.component) {
-      v.component(pluginName, Vue.extend({ mixins: [PluginWrapper, p.component] }))
+      v.component(
+        pluginName,
+        Vue.extend({ mixins: [PluginWrapper, p.component] })
+      );
     }
 
     // TODO: check initialization function
-  })
-  return plugins
+  });
+  return plugins;
 };
 
-export const pickInitialPlugin = (plugins: PlaygroundPlugin[]): PlaygroundPlugin | null => {
+export const pickInitialPlugin = (
+  plugins: PlaygroundPlugin[]
+): PlaygroundPlugin | null => {
   const priorityPlugin = plugins.find(
     p => p.shouldBeSelected && p.shouldBeSelected()
   );
-  return priorityPlugin || plugins[0] || null
-}
+  return priorityPlugin || plugins[0] || null;
+};
 
 export const setupPlayground = (
   sandbox: Sandbox,
   monaco: Monaco,
   config: PlaygroundConfig
 ) => {
-
   // let debouncingTimer = false;
   // sandbox.editor.onDidChangeModelContent(_event => {
   //   const plugin = currentPlugin();

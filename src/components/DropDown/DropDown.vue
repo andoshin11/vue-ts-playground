@@ -1,11 +1,24 @@
 <template>
   <div class="DropDown">
-    <Button @click="isOpen = !isOpen" class="button" :class="{ isOpen: 'open' }" >
+    <Button
+      @click="isOpen = !isOpen"
+      class="button"
+      :class="{ isOpen: 'open' }"
+    >
       <div class="wrapper">
         <span>{{ text }}</span>
         <div class="carret">
-          <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15.1484 0.648438L15.8516 1.35156L8 9.20312L0.148438 1.35156L0.851562 0.648438L8 7.79688L15.1484 0.648438Z" fill="#000000"/>
+          <svg
+            width="16"
+            height="10"
+            viewBox="0 0 16 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.1484 0.648438L15.8516 1.35156L8 9.20312L0.148438 1.35156L0.851562 0.648438L8 7.79688L15.1484 0.648438Z"
+              fill="#000000"
+            />
           </svg>
         </div>
       </div>
@@ -18,11 +31,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Button from '../Base/Button'
+import Vue from "vue";
+import Button from "../Base/Button";
 
 interface IData {
-  isOpen: boolean
+  isOpen: boolean;
 }
 
 export default Vue.extend({
@@ -35,16 +48,16 @@ export default Vue.extend({
       required: true
     },
     size: {
-      type: String as () => ('sm' | 'md' | 'lg'),
-      default: 'md'
+      type: String as () => "sm" | "md" | "lg",
+      default: "md"
     }
   },
   data(): IData {
     return {
       isOpen: false
-    }
+    };
   }
-})
+});
 </script>
 
 <style scoped>
@@ -94,8 +107,7 @@ export default Vue.extend({
   top: calc(100% + 8px);
   right: 0;
   border-radius: 4px;
-  background: #F2F2F7;
-  box-shadow:  5px 5px 10px #808083, 
-              -5px -5px 10px #ffffff;
+  background: #f2f2f7;
+  box-shadow: 5px 5px 10px #808083, -5px -5px 10px #ffffff;
 }
 </style>

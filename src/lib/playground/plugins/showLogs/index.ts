@@ -1,8 +1,8 @@
-import { PlaygroundPlugin } from '@/lib/playground';
-import Component from './showLogs.vue'
+import { PlaygroundPlugin } from "@/lib/playground";
+import Component from "./showLogs.vue";
 
 export const showLogsPlugin: PlaygroundPlugin = {
-  id: 'logs',
+  id: "logs",
   displayName: "Run",
   component: Component
 };

@@ -21,8 +21,8 @@
 import Vue from "vue";
 import { RootState } from "@/store";
 import Tabs from "@/components/SidebarTabs";
-import PluginContainer from '@/components/PluginContainer'
-import { judgeMobile } from '../../utils'
+import PluginContainer from "@/components/PluginContainer";
+import { judgeMobile } from "../../utils";
 
 export default Vue.extend({
   components: {
@@ -47,9 +47,9 @@ export default Vue.extend({
       return this.$store.state;
     },
     isMobile(): boolean {
-      return judgeMobile()
+      return judgeMobile();
     }
-  },
+  }
 });
 </script>
 

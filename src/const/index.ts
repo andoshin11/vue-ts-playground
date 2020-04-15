@@ -12,4 +12,4 @@ export const MONACO_TS_VERSIONS = [
   "2.8.1",
   "2.7.2",
   "2.4.1"
-]
+];

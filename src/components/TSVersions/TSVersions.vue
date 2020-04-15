@@ -1,22 +1,28 @@
 <template>
   <ul>
-    <li v-for="version in allVersions" :key="version" @click="updateTSVersion(version)">{{ version }}</li>
+    <li
+      v-for="version in allVersions"
+      :key="version"
+      @click="updateTSVersion(version)"
+    >
+      {{ version }}
+    </li>
   </ul>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { RootState } from '@/store'
-import { updateTSVersion } from '@/utils/router'
-import { MONACO_TS_VERSIONS } from '@/const'
+import Vue from "vue";
+import { RootState } from "@/store";
+import { updateTSVersion } from "@/utils/router";
+import { MONACO_TS_VERSIONS } from "@/const";
 
 export default Vue.extend({
   computed: {
     state(): RootState {
-      return this.$store.state
+      return this.$store.state;
     },
     allVersions(): string[] {
-      return MONACO_TS_VERSIONS
+      return MONACO_TS_VERSIONS;
     }
   },
   methods: {
@@ -26,7 +32,7 @@ export default Vue.extend({
       updateTSVersion(sandbox, this.$router, version);
     }
   }
-})
+});
 </script>
 
 <style scoped>
@@ -38,7 +44,7 @@ ul {
 
 li {
   cursor: pointer;
-  transition: ease .3s;
+  transition: ease 0.3s;
   width: 100%;
   display: block;
   padding: 8px;

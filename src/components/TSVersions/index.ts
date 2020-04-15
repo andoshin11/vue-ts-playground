@@ -1,3 +1,3 @@
-import TSVersions from './TSVersions.vue'
+import TSVersions from "./TSVersions.vue";
 
-export default TSVersions
+export default TSVersions;

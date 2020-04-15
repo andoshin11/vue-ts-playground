@@ -1,7 +1,9 @@
 <template>
   <Modal v-if="!!modalForCode" :active="!!modalForCode" @close="close">
     <div class="ModalForCode">
-      <h2 v-if="modalForCode.subtitle" class="subtitle">{{ modalForCode.subtitle }}</h2>
+      <h2 v-if="modalForCode.subtitle" class="subtitle">
+        {{ modalForCode.subtitle }}
+      </h2>
       <pre v-if="modalForCode.code" ref="pre" class="pre">
         <code class="code">{{ modalForCode.code }}</code>
       </pre>
@@ -18,39 +20,39 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Modal from '@/components/Modal'
-import { RootState } from '@/store'
+import Vue from "vue";
+import Modal from "@/components/Modal";
+import { RootState } from "@/store";
 
 export default Vue.extend({
   components: {
     Modal
   },
   computed: {
-    modalForCode(): RootState['modalForCode'] {
-      return this.$store.state.modalForCode
+    modalForCode(): RootState["modalForCode"] {
+      return this.$store.state.modalForCode;
     }
   },
   methods: {
     close() {
-      this.$store.commit('storeModalForCode', null)
+      this.$store.commit("storeModalForCode", null);
     },
     selectAll() {
       const selection = window.getSelection();
       const range = document.createRange();
-      range.selectNodeContents(this.$refs['pre'] as any);
+      range.selectNodeContents(this.$refs["pre"] as any);
       if (selection) {
         selection.removeAllRanges();
         selection.addRange(range);
       }
     },
     copy() {
-      const code = this.modalForCode && this.modalForCode.code
-      if (!code) return
+      const code = this.modalForCode && this.modalForCode.code;
+      if (!code) return;
       navigator.clipboard.writeText(code);
     }
   }
-})
+});
 </script>
 
 <style scoped>

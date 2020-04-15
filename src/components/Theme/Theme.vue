@@ -6,21 +6,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { RootState } from '@/store'
+import Vue from "vue";
+import { RootState } from "@/store";
 
 export default Vue.extend({
   computed: {
     state(): RootState {
-      return this.$store.state
+      return this.$store.state;
     }
   },
   methods: {
     setEditorTheme(theme: "sandbox" | "sandbox-dark") {
-      this.$store.dispatch('setTheme', theme)
+      this.$store.dispatch("setTheme", theme);
     }
   }
-})
+});
 </script>
 
 <style scoped>
@@ -32,7 +32,7 @@ ul {
 
 li {
   cursor: pointer;
-  transition: ease .3s;
+  transition: ease 0.3s;
   width: 100%;
   display: block;
   padding: 8px;

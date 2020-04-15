@@ -10,11 +10,11 @@ module.exports = {
   },
   transpileDependencies: ["vuetify"],
   pwa: {
-    name: 'Unofficial TypeScript Playground',
-    themeColor: '#007ACC',
-    msTileColor: '#007ACC',
+    name: "Unofficial TypeScript Playground",
+    themeColor: "#007ACC",
+    msTileColor: "#007ACC",
     manifestOptions: {
-      short_name: 'TS Playground'
+      short_name: "TS Playground"
     }
   }
 };

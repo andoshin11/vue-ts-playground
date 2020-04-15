@@ -7,19 +7,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 
 export default Vue.extend({
   props: {
     content: {
       type: String,
-      default: ''
+      default: ""
     }
   },
-  watch: {
-
-  }
-})
+  watch: {}
+});
 </script>
 
 <style scoped>
@@ -51,7 +49,8 @@ export default Vue.extend({
   white-space: pre-wrap;
 }
 
-pre, code{
-    white-space:normal;
+pre,
+code {
+  white-space: normal;
 }
 </style>

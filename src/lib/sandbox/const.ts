@@ -1,4 +1,4 @@
-import { PlaygroundConfig } from './types'
+import { PlaygroundConfig } from "./types";
 
 /** Default Monaco settings for playground */
 export const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
@@ -22,4 +22,4 @@ export const defaultPlaygroundSettings: PlaygroundConfig = {
     error: () => {},
     log: () => {}
   }
-}
+};

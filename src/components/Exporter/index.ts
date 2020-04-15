@@ -1,3 +1,3 @@
-import Exporter from './Exporter.vue'
+import Exporter from "./Exporter.vue";
 
-export default Exporter
+export default Exporter;

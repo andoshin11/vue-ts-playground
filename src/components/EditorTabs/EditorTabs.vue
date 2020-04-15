@@ -13,7 +13,7 @@
       </li>
       <li class="tab">
         <DropDown text="Config">
-          <ConfigOptions/>
+          <ConfigOptions />
         </DropDown>
       </li>
       <li class="tab">
@@ -28,11 +28,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { RootState } from "@/store";
-import ConfigOptions from '@/components/ConfigOptions'
-import Theme from '@/components/Theme'
-import Exporter from '@/components/Exporter'
-import TSVersions from '../TSVersions'
-import DropDown from '../DropDown'
+import ConfigOptions from "@/components/ConfigOptions";
+import Theme from "@/components/Theme";
+import Exporter from "@/components/Exporter";
+import TSVersions from "../TSVersions";
+import DropDown from "../DropDown";
 
 export default Vue.extend({
   components: {
@@ -49,7 +49,7 @@ export default Vue.extend({
     tsVersion(): string | null {
       const { sandbox } = this.state;
       return sandbox && sandbox.ts.version;
-    },
+    }
   }
 });
 </script>
@@ -59,7 +59,7 @@ export default Vue.extend({
   width: 100%;
   height: 48px;
   margin-right: -2px;
-  background: #F2F2F7;
+  background: #f2f2f7;
 }
 
 .tabs {

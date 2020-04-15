@@ -6,36 +6,40 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import CodePreview from '@/components/CodePreview'
+import Vue from "vue";
+import CodePreview from "@/components/CodePreview";
 
 interface IData {
-  content: string | null
+  content: string | null;
 }
 
 export default Vue.extend({
-  name: 'showJS',
+  name: "showJS",
   components: {
     CodePreview
   },
   data(): IData {
     return {
       content: null
-    }
+    };
   },
   pluginHooks: {
     async modelChangedDebounce(sandbox, _, vm) {
       try {
-        const runnableJS = await sandbox.getRunnableJS()
-        const coloredJS = await sandbox.monaco.editor.colorize(runnableJS, 'javascript', {})
+        const runnableJS = await sandbox.getRunnableJS();
+        const coloredJS = await sandbox.monaco.editor.colorize(
+          runnableJS,
+          "javascript",
+          {}
+        );
 
         // @ts-ignore
-        vm.content = coloredJS
+        vm.content = coloredJS;
       } catch (e) {
         // @ts-ignore
-        vm.content = ''
+        vm.content = "";
       }
     }
   }
-})
+});
 </script>

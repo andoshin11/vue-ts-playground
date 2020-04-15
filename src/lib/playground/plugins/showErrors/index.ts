@@ -1,8 +1,8 @@
-import { PlaygroundPlugin } from '@/lib/playground';
-import Component from './showErrors.vue'
+import { PlaygroundPlugin } from "@/lib/playground";
+import Component from "./showErrors.vue";
 
 export const showErrorsPlugin: PlaygroundPlugin = {
-  id: 'errors',
+  id: "errors",
   displayName: "Errors",
   component: Component
 };

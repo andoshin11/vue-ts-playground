@@ -1,7 +1,11 @@
 import Vue, { VNode } from "vue";
 import { RootState } from "@/store";
 import { Sandbox, PlaygroundConfig } from "@/lib/sandbox";
-import { pluginFactories, defaultPlugins, pickInitialPlugin } from "@/lib/playground";
+import {
+  pluginFactories,
+  defaultPlugins,
+  pickInitialPlugin
+} from "@/lib/playground";
 import { getURLQueryWithCompilerOptions } from "@/utils/router";
 
 export default Vue.extend({
@@ -24,7 +28,7 @@ export default Vue.extend({
     initPlugins() {
       const plugins = pluginFactories(Vue)(defaultPlugins);
       this.$store.commit("storePlugins", plugins);
-      const initialPlugin = pickInitialPlugin(this.state.plugins)
+      const initialPlugin = pickInitialPlugin(this.state.plugins);
       if (initialPlugin) {
         this.$store.commit("storeCurrentPlugin", initialPlugin);
       }
