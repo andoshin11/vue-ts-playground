@@ -46,7 +46,7 @@ async function main() {
     new Vue({
       router,
       store,
-      vuetify,
+      // vuetify,
       render: h => h(App)
     }).$mount("#app");
   })

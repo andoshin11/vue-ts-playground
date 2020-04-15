@@ -35,8 +35,8 @@ export default Vue.extend({
       // Get how far right the mouse is from the right
       const rightX = this.sidebarRef.getBoundingClientRect().right;
       const offset = rightX - e.pageX;
-      const screenClampLeft = window.innerWidth - 320;
-      const clampedOffset = Math.min(Math.max(offset, 280), screenClampLeft);
+      const screenClampLeft = window.innerWidth - 470;
+      const clampedOffset = Math.min(Math.max(offset, 328), screenClampLeft);
 
       // Emit style object
       this.$emit("drag", {

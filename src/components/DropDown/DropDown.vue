@@ -1,13 +1,15 @@
 <template>
   <div class="DropDown">
-    <button @click="isOpen = !isOpen" class="button" :class="{ isOpen: 'open' }" >
-      <span>{{ text }}</span>
-      <div class="carret">
-        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15.1484 0.648438L15.8516 1.35156L8 9.20312L0.148438 1.35156L0.851562 0.648438L8 7.79688L15.1484 0.648438Z" fill="#000000"/>
-        </svg>
+    <Button @click="isOpen = !isOpen" class="button" :class="{ isOpen: 'open' }" >
+      <div class="wrapper">
+        <span>{{ text }}</span>
+        <div class="carret">
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.1484 0.648438L15.8516 1.35156L8 9.20312L0.148438 1.35156L0.851562 0.648438L8 7.79688L15.1484 0.648438Z" fill="#000000"/>
+          </svg>
+        </div>
       </div>
-    </button>
+    </Button>
     <div v-if="isOpen" class="mask" @click="isOpen = false" />
     <div v-if="isOpen" class="popup">
       <slot />
@@ -17,16 +19,24 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Button from '../Base/Button'
 
 interface IData {
   isOpen: boolean
 }
 
 export default Vue.extend({
+  components: {
+    Button
+  },
   props: {
     text: {
       type: String,
       required: true
+    },
+    size: {
+      type: String as () => ('sm' | 'md' | 'lg'),
+      default: 'md'
     }
   },
   data(): IData {
@@ -40,29 +50,30 @@ export default Vue.extend({
 <style scoped>
 .DropDown {
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .button {
-  padding: 4px 20px;
-  border-radius: 4px;
-  background: #F2F2F7;
-  box-shadow:  4px 4px 8px #cbcbcf, 
-              -4px -4px 8px #ffffff;
+  padding: 0 12px;
+  font-size: 1.4rem;
+  min-height: 40px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .button {
+    min-height: 36px;
+    padding: 0 10px;
+  }
+}
+
+.wrapper {
   display: flex;
   align-items: center;
-}
-
-.button:active,
-.button:hover,
-.button:focus {
-  outline: none;
-  border-radius: 4px;
-  background: #F2F2F7;
-  box-shadow: 2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
-}
-
-.carret {
-  margin-left: 16px;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
 }
 
 .mask {

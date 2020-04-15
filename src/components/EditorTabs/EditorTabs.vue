@@ -56,6 +56,7 @@ export default Vue.extend({
 
 <style scoped>
 .EditorTabs {
+  width: 100%;
   height: 48px;
   margin-right: -2px;
   background: #F2F2F7;
@@ -68,5 +69,9 @@ export default Vue.extend({
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.tab {
+  width: 23%;
 }
 </style>

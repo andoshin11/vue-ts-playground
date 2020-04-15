@@ -69,7 +69,7 @@ export class Sandbox {
       sharedEditorOptions,
       config.monacoSettings || {}
     );
-    const editor = monaco.editor.create(element, monacoSettings);
+    const editor = monaco.editor.create(element, {...monacoSettings, fontSize: 16});
     this.editor = editor
 
     // Grab types

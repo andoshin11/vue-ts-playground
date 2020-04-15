@@ -1,7 +1,7 @@
 <template>
   <div id="Editor" class="Editor" :style="innerStyleObj">
-    <EditorTabs />
-    <div class="EditorContainer">
+    <EditorTabs class="head" />
+    <div class="body EditorContainer">
       <div id="EditorArea" class="EditorArea">
         <div id="EditorEmbed" class="EditorEmbed"></div>
       </div>
@@ -47,13 +47,26 @@ export default Vue.extend({
 
 <style scoped>
 .Editor {
-  width: 50vw;
-  height: calc(100vh - 48px);
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .Editor {
+    width: 100%;
+  }
+}
+
+.head {
+  height: 48px;
+}
+
+.body {
+  height: calc(100% - 48px);
 }
 
 .EditorContainer {
   width: 100%;
-  height: 100%;
   background-color: #F2F2F7;
   padding: 2%;
 }

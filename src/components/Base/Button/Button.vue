@@ -1,6 +1,7 @@
 <template>
   <button
     class="Button"
+    :class="{ active: isActive }"
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false"
     @click="$emit('click')"
@@ -38,6 +39,10 @@ export default Vue.extend({
     colorDifference: {
       type: Number,
       default: 0.15
+    },
+    isActive: {
+      type: Boolean,
+      default: false
     }
   },
   data(): IData {
@@ -114,6 +119,7 @@ export default Vue.extend({
   box-shadow: 2px 2px 2px #9d9da1, -2px -2px 6px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
 }
 
+.Button.active,
 .Button:active,
 .Button:focus {
   outline: none;
@@ -121,6 +127,7 @@ export default Vue.extend({
   box-shadow: 2px 2px 6px #9d9da1, 0 0 0 #ffffff, 2px 2px 2px 0px #cbcbcf inset, -2px -2px 6px 2px #ffffff inset;
 }
 
+.Button.active,
 .Button:active::after,
 .Button:focus::after {
   box-shadow: 2px 2px 2px 0 #c2c2c6 inset, -2px -2px 2px 0 #ffffff;

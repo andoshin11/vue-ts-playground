@@ -1,11 +1,15 @@
 <template>
-  <v-app id="app">
-    <Header />
+  <div id="app">
+    <div class="container">
+      <Header class="app_header" />
+      <main class="app_main">
+        <Provider>
+          <router-view />
+        </Provider>
+      </main>
+    </div>
     <ModalForCode />
-    <Provider>
-      <router-view />
-    </Provider>
-  </v-app>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,10 +27,45 @@ export default Vue.extend({
 });
 </script>
 
+<style scoped>
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app_header {
+  height: 64px;
+}
+
+.app_main {
+  height: calc(100% - 64px);
+}
+
+@media screen and (max-width: 768px) {
+  .app_main {
+    /* display: none; */
+  }
+}
+</style>
+
 <style>
+html {
+  font-size: 10px;
+  touch-action: manipulation;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-color: #F2F2F7;
+  font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.6rem;
+  touch-action: manipulation;
 }
 
 #app {
@@ -34,5 +73,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
 }
 </style>

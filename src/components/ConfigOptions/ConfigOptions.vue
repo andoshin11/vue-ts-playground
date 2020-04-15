@@ -15,26 +15,29 @@
       </div>
     </div>
     <div class="checkOptions">
-      <div v-for="(category, categoryId) in categoryMap" :key="categoryId" class="category">
-        <h4>{{ categoryName(categoryId) }}</h4>
-        <ul class="optionsList">
-          <li v-for="(summary, optId) in category" :key="optId" class="optionsListItem">
-            <label>
-              <input
-                type="checkbox"
-                :checked="compilerOptions[optId]"
-                :name="summary.id"
-                :id="'option-' + summary.id"
-                class="checkbox"
-                @click="toggleChckStatus(optId)"
-              >
-              <span class="optionName">{{ summary.id }}</span>
-              <br/>
-              <span>{{ summary.oneliner }}</span>
-            </label>
-          </li>
-        </ul>
-      </div>
+      <ul class="optionsList">
+        <li v-for="option in boolOptions" :key="option.id" class="optionsListItem">
+          <Checkbox
+            :value="compilerOptions[option.id]"
+            :name="option.id"
+            :id="'option-' + option.id"
+            @input="toggleChckStatus(option.id)"
+          >
+            {{ option.id }}
+          </Checkbox>
+          <!-- <label>
+            <input
+              type="checkbox"
+              :checked="compilerOptions[option.id]"
+              :name="option.id"
+              :id="'option-' + option.id"
+              class="checkbox"
+              @click="toggleChckStatus(option.id)"
+            >
+            <span class="optionName">{{ option.id }}</span>
+          </label> -->
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -44,6 +47,9 @@ import Vue from 'vue'
 import { languages } from 'monaco-editor'
 import { RootState } from '@/store'
 import { optionsSummary, OptionsSummary } from '@/lib/playground/const/optionsSummary'
+import { sortBy } from '@/utils'
+import DropDown from '../DropDown'
+import Checkbox from '../Base/Checkbox'
 
 type CompilerOptions = languages.typescript.CompilerOptions
 
@@ -58,6 +64,10 @@ interface IData {
 }
 
 export default Vue.extend({
+  components: {
+    // DropDown
+    Checkbox
+  },
   data(): IData {
     return {
       categoryMap: {},
@@ -95,6 +105,12 @@ export default Vue.extend({
       if (!sandbox) return null
 
       return sandbox.monaco.languages
+    },
+    boolOptions(): OptionsSummary[] {
+      const { compilerOptions } = this
+      const boolOptions = optionsSummary
+        .filter(k => typeof compilerOptions![k.id] === 'boolean')
+      return boolOptions.sort(sortBy('id'))
     }
   },
   methods: {
@@ -109,69 +125,26 @@ export default Vue.extend({
 
       sandbox.updateCompilerSetting(optId, this.checkStatus[optId])
     },
-    categoryName(categoryId: string): string | null {
-      const category = this.categoryMap[categoryId]
-      if (!category || !Object.keys(category).length) return null
-      const representOpt = Object.values(category)[0]
-      return representOpt.categoryDisplay 
-    },
-    setCategoryMap() {
-      const { compilerOptions } = this
-
-      const boolOptions = Object.keys(compilerOptions || {})
-        .filter(k => typeof compilerOptions![k] === 'boolean')
-
-      boolOptions.forEach(optId => {
-        const summary = optionsSummary.find(sum => optId === sum.id)
-        if (!summary) return
-
-        const existingCategory = this.categoryMap[summary.categoryID]
-        if (!existingCategory) {
-          this.categoryMap = {
-            ...this.categoryMap,
-            [summary.categoryID]: {}
-          }
-        } 
-
-        this.categoryMap = {
-          ...this.categoryMap,
-          [summary.categoryID]: {
-            ...this.categoryMap[summary.categoryID],
-            [optId]: summary
-          }
-        }
-      })
-    }
-  },
-  mounted() {
-    this.setCategoryMap()
   }
 })
 </script>
 
 <style scoped>
 .ConfigOptions {
-  background-color: #fff;
+  min-width: 160px;
   padding: 16px;
-  height: 90vh;
+  height: 70vh;
   overflow-y: scroll;
-}
-
-.checkOptions {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.category {
-  width: 50%;
 }
 
 .optionsList {
   list-style: none;
+  padding-left: 0;
 }
 
 .optionsListItem {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  white-space: nowrap;
 }
 
 .checkbox {

@@ -37,11 +37,11 @@ export default Vue.extend({
 
 <style scoped>
 .SidebarTabs {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 2.5rem;
-  margin: 16px 0;
 }
 
 .tab {
@@ -54,9 +54,10 @@ export default Vue.extend({
   outline: inherit;
   transition: .3s;
   padding: 8px 24px;
+  transition: all 0.3s cubic-bezier(.79,.21,.06,.81);
   border-radius: 0px;
   background: #F2F2F7;
-  box-shadow:  8px 4px 8px #ceced2, 8px -4px 8px #ffffff;
+  box-shadow: 8px 4px 8px #ceced2, 8px -4px 8px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
   border-right: solid 1px rgba(0,0,0,.1);
 }
 
@@ -69,12 +70,19 @@ export default Vue.extend({
   border-right: none;
 }
 
-.tab.active,
 .tab:hover {
+  border-right: solid 1px #ceced2;
+  box-shadow: 2px 2px 1px #9d9da1, -2px -2px 6px #ffffff, 0 0 0 0 transparent inset, 0 0 0 0 transparent inset;
+
+}
+
+.tab.active,
+.tab:active,
+.tab:focus {
   color: #187abf;
   background: #F2F2F7;
   border-right: solid 1px transparent;
-  box-shadow: 2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
+  box-shadow: 2px 1px 1px #9d9da1, 0 0 0 transparent, 2px 2px 2px 0px #cbcbcf inset, -2px -2px 2px 0px #ffffff inset;
 }
 
 .tab:last-child.active,

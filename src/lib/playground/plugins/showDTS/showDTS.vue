@@ -1,6 +1,11 @@
 <template>
-  <CodePreview v-if="content" :content="content" />
-  <Loading v-else />
+  <div v-if="content" class="wrapper">
+    <CodePreview :content="content" />
+  </div>
+  <div v-else>
+    No declaration found.
+  </div>
+  <!-- <Loading v-else /> -->
 </template>
 
 <script lang="ts">
@@ -16,7 +21,7 @@ export default Vue.extend({
   name: 'showDTS',
   components: {
     CodePreview,
-    Loading
+    // Loading
   },
   data(): IData {
     return {
@@ -34,3 +39,10 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style scoped>
+.wrapper {
+  height: 100%;
+  width: 100%;
+}
+</style>

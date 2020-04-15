@@ -139,6 +139,12 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.showError {
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+
 .errors {
   margin: 0;
   padding: 0;
