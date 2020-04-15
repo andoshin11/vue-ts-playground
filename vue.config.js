@@ -8,5 +8,13 @@ module.exports = {
       })
     ]
   },
-  transpileDependencies: ["vuetify"]
+  transpileDependencies: ["vuetify"],
+  pwa: {
+    name: 'Unofficial TypeScript Playground',
+    themeColor: '#007ACC',
+    msTileColor: '#007ACC',
+    manifestOptions: {
+      short_name: 'TS Playground'
+    }
+  }
 };
